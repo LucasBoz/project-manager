@@ -1,0 +1,20 @@
+<md-content layout="column" layout-fill flex>
+
+
+    <md-grid-list  layout="row" layout-align="center start"
+                   style="padding-left: 5%; padding-top: 20px"
+                   md-cols-gt-md="5" md-cols-md="2" md-cols-sm="1"
+                   md-row-height="4:3"
+                   md-gutter="10px" >
+
+        <md-grid-tile ng-repeat="note in ['1', '2', '3','4', '5', '6','7', '8', '9','10', '11', '12','13', '14', '15', '16']" >
+
+            <md-content class="md-whiteframe-4dp" ng-click="main.openProject($event)">
+                <h3 class="item-list">123123</h3>
+
+            </md-content>
+        </md-grid-tile>
+    </md-grid-list>
+
+    <div flex></div>
+</md-content>
