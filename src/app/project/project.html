@@ -2,7 +2,7 @@
 
 
 
-  <h1>PROJETO {{project.id}}</h1>
+  <h1>PROJETO {{project | json}}</h1>
 
   <md-button ng-click="project.manageMembers($event, project)">Gerenciar membros</md-button>
 

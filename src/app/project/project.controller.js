@@ -6,11 +6,18 @@
     .controller('ProjectController', ProjectController);
 
   /** @ngInject */
-  function ProjectController($routeParams, $mdDialog, $log) {
+  function ProjectController($routeParams, $mdDialog, $log, dataService) {
 
     var vm = this;
 
     vm.id = $routeParams.id;
+
+    //dataService.find("").success(function(data){
+    //  vm.project = data;
+    //}).error(function(message){
+    //  $log.debug(message);
+    //});
+
 
     $log.debug($routeParams.id);
 

@@ -16,7 +16,6 @@
 
       return {
 
-        // get data
         get : function(id, table, page) {
           if(id){
             return $http.get(endPoint + table + '/' + id);
@@ -32,9 +31,7 @@
           );
         },
 
-        // get data
         find : function(table, args) {
-
           if(args == undefined)
             args = [];
 
@@ -46,7 +43,6 @@
           );
         },
 
-        // save data
         save : function(data, table) {
           return $http({
             method: 'POST',
@@ -56,7 +52,7 @@
           });
         },
 
-        // update data
+
         update: function(id, data, table) {
           return $http({
             method: 'PUT',
@@ -66,7 +62,7 @@
           });
         },
 
-        // destroy data
+
         destroy : function(id, table) {
           return $http.delete(endPoint + table + '/' + id);
         }

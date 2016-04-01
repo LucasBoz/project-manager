@@ -19,7 +19,7 @@
     <!-- endinject -->
     <!-- endbuild -->
   </head>
-  <body ng-controller="MainController">
+  <body ng-controller="MainController as mainController">
     <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -49,7 +49,7 @@
     <header>
       <md-toolbar layout="row">
 
-        <md-button ng-click="console.log('ABRE O MENU LATERAL ALI');" style="width: 36px; height: 36px; margin: auto 5px auto 5px;">
+        <md-button ng-click="mainController.openSidenav()" style="width: 36px; height: 36px; margin: auto 5px auto 5px;">
           <md-icon md-font-icon="menu"
                    md-svg-src="assets/icons/menu.svg"
                    style="width: 36px; height: 36px"
