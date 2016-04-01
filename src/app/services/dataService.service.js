@@ -42,6 +42,14 @@
             }
           );
         },
+        findProject : function() {
+
+          return $http({
+              url: "http://localhost:3000/app/project.json",
+              method: 'GET'
+            }
+          );
+        },
 
         save : function(data, table) {
           return $http({

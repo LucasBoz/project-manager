@@ -1,0 +1,72 @@
+{
+  "id": 1,
+  "name": "proj asd",
+  "milestones": [
+    {
+      "name": "no-milestone",
+      "description": "asdhasdn asçd ,asdmi masdasl",
+      "activities": [
+        {
+          "name" : "acti 1",
+          "resposible": "doistiuzim"
+        },{
+          "name" : "acti so hard",
+          "resposible": "quatrutiuzim"
+        }
+      ]
+    },
+
+    {
+      "name": "MILE 1",
+      "description": "asdhasdn asçd ,asdmi masdasl",
+      "activities": [
+        {
+          "name" : "acti 1",
+          "resposible": "doistiuzim"
+        },{
+          "name" : "acti so hard",
+          "resposible": "quatrutiuzim",
+          "notes": [
+            {
+              "name": "note 1 ",
+              "description": "chamada julieta"
+            },
+            {
+              "name": "notw 2",
+              "description": "hell you two then other sites"
+            }
+          ]
+        },
+        {
+          "name" : "acti 1",
+          "resposible": "doistiuzim"
+        },{
+          "name" : "acti so hard",
+          "resposible": "quatrutiuzim"
+        },
+        {
+          "name" : "acti 1",
+          "resposible": "doistiuzim"
+        },{
+          "name" : "acti so hard",
+          "resposible": "quatrutiuzim"
+        }
+      ]
+    },
+
+    {
+      "name": "MILE 2",
+      "description": "asdhasdn asçd ,asdmi masdasl",
+      "activities": [
+        {
+          "name" : "acti 1",
+          "resposible": "doistiuzim"
+        },{
+          "name" : "acti so hard",
+          "resposible": "quatrutiuzim"
+        }
+      ]
+    }
+
+  ]
+}

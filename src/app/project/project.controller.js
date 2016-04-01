@@ -12,11 +12,11 @@
 
     vm.id = $routeParams.id;
 
-    //dataService.find("").success(function(data){
-    //  vm.project = data;
-    //}).error(function(message){
-    //  $log.debug(message);
-    //});
+    dataService.findProject("").success(function(data){
+      vm.project = data;
+    }).error(function(message){
+      $log.debug(message);
+    });
 
 
     $log.debug($routeParams.id);
