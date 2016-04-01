@@ -19,16 +19,46 @@
     <!-- endinject -->
     <!-- endbuild -->
   </head>
-  <body>
+  <body ng-controller="MainController">
     <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
+    <md-sidenav
+      class="md-sidenav-left"
+      md-component-id="left"
+      md-is-open="false"
+      md-disable-backdrop
+      md-whiteframe="4">
+      <md-toolbar class="md-theme-indigo">
+        <h1 class="md-toolbar-tools">Sidenav Left</h1>
+      </md-toolbar>
+      <md-content layout-padding>
+        <md-button class="md-primary" hide-gt-md>
+          Close Sidenav Left
+        </md-button>
+        <p hide-md show-gt-md>
+
+          This sidenav is locked open on your device. To go back to the default behavior,
+          narrow your display.
+        </p>
+      </md-content>
+    </md-sidenav>
 
 
     <header>
-      <md-toolbar>
-        <h4 style="margin-left: 30px">PROJETOS</h4>
+      <md-toolbar layout="row">
+
+        <md-button ng-click="console.log('ABRE O MENU LATERAL ALI');" style="width: 36px; height: 36px; margin: auto 5px auto 5px;">
+          <md-icon md-font-icon="menu"
+                   md-svg-src="assets/icons/menu.svg"
+                   style="width: 36px; height: 36px"
+                   aria-label="menu">
+          </md-icon>
+        </md-button>
+
+        <h4>PROJETOS</h4>
+
       </md-toolbar>
     </header>
 

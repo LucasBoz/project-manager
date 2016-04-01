@@ -6,34 +6,74 @@
     .controller('ProjectController', ProjectController);
 
   /** @ngInject */
-  function ProjectController($timeout, webDevTec, toastr) {
+  function ProjectController($routeParams, $mdDialog) {
+
     var vm = this;
 
-    vm.awesomeThings = [];
-    vm.classAnimation = '';
-    vm.creationDate = 1459450547101;
-    vm.showToastr = showToastr;
+    vm.id = $routeParams.id;
 
-    activate();
+    console.log($routeParams.id);
 
-    function activate() {
-      getWebDevTec();
-      $timeout(function() {
-        vm.classAnimation = 'rubberBand';
-      }, 4000);
+
+
+
+    // ------------------
+    // Functions
+    //------------------
+
+
+
+    vm.manageMembers = function(ev){
+
+
+      $mdDialog.show({
+          controller: MembersController,
+          controllerAs : 'members',
+          templateUrl: 'app/project/project-dialog/members-dialog.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:true
+
+        })
+        .then(function(answer) {
+          vm.status = 'You said the information was "' + answer + '".';
+        }, function() {
+          vm.status = 'You cancelled the dialog.';
+        });
+
+
+    };
+
+    vm.manageMembers(null);
+
+    //------------
+    //  DIALOG CONTROLLER
+    //------------
+    function MembersController(){
+      vm = this;
+
+      vm.modal = "TEST";
+
+      console.log('MembersController');
+
+      vm.hide = function() {
+        $mdDialog.hide();
+      };
+      vm.cancel = function() {
+        $mdDialog.cancel();
+      };
+      vm.answer = function(answer) {
+        $mdDialog.hide(answer);
+      };
     }
 
+
+    //toast
+    vm.showToastr = showToastr;
     function showToastr() {
       toastr.info('Fork <a href="https://github.com/Swiip/generator-gulp-angular" target="_blank"><b>generator-gulp-angular</b></a>');
       vm.classAnimation = '';
     }
 
-    function getWebDevTec() {
-      vm.awesomeThings = webDevTec.getTec();
-
-      angular.forEach(vm.awesomeThings, function(awesomeThing) {
-        awesomeThing.rank = Math.random();
-      });
-    }
   }
 })();
