@@ -6,10 +6,13 @@
     .controller('MembersController', MembersController);
 
   /** @ngInject */
-  function MembersController($routeParams) {
+  function MembersController() {
     var vm = this;
 
 
     vm.modal = "BATATA";
+
+
+
   }
 })();

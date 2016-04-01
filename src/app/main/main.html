@@ -7,11 +7,10 @@
                    md-row-height="4:3"
                    md-gutter="10px" >
 
-        <md-grid-tile ng-repeat="project in ['1', '2', '3','4', '5', '6','7', '8', '9','10', '11', '12','13', '14', '15', '16']" >
+        <md-grid-tile ng-repeat="project in main.projects" >
 
-            <md-content style="height: 200px; width: 150px" class="md-whiteframe-4dp" ng-click="main.openProject(project)">
+            <md-content style="height: 200px; width: 150px" class="md-whiteframe-4dp" ng-click="main.openProject(project.id)">
                 <h3 class="item-list">{{project}}</h3>
-
             </md-content>
         </md-grid-tile>
     </md-grid-list>

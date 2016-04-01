@@ -6,13 +6,13 @@
     .controller('ProjectController', ProjectController);
 
   /** @ngInject */
-  function ProjectController($routeParams, $mdDialog) {
+  function ProjectController($routeParams, $mdDialog, $log) {
 
     var vm = this;
 
     vm.id = $routeParams.id;
 
-    console.log($routeParams.id);
+    $log.debug($routeParams.id);
 
 
 
@@ -23,16 +23,19 @@
 
 
 
-    vm.manageMembers = function(ev){
+    vm.manageMembers = function(ev, project){
 
+      //var project = angular.copy(vm.project);
+      $log.debug(project);
 
       $mdDialog.show({
           controller: MembersController,
           controllerAs : 'members',
           templateUrl: 'app/project/project-dialog/members-dialog.html',
-          parent: angular.element(document.body),
+          //parent: angular.element(document.body),
           targetEvent: ev,
-          clickOutsideToClose:true
+          clickOutsideToClose:true,
+          locals: { project : project}
 
         })
         .then(function(answer) {
@@ -44,17 +47,17 @@
 
     };
 
-    vm.manageMembers(null);
-
     //------------
     //  DIALOG CONTROLLER
     //------------
-    function MembersController(){
-      vm = this;
+    function MembersController(project){
+      $log.debug('MembersController');
+
+      var vm = this;
+
+      vm.project = project;
 
       vm.modal = "TEST";
-
-      console.log('MembersController');
 
       vm.hide = function() {
         $mdDialog.hide();
@@ -68,12 +71,6 @@
     }
 
 
-    //toast
-    vm.showToastr = showToastr;
-    function showToastr() {
-      toastr.info('Fork <a href="https://github.com/Swiip/generator-gulp-angular" target="_blank"><b>generator-gulp-angular</b></a>');
-      vm.classAnimation = '';
-    }
 
   }
 })();
