@@ -1,33 +1,14 @@
-<md-content layout="column" layout-fill flex>
+<md-content layout="column" layout-fill flex style="padding: 0 0 0 20px">
 
 
-  <md-sidenav
-    class="md-sidenav-right"
-    md-component-id="right"
-    md-is-open="true"
-    md-is-locked-open="true"
-    md-disable-backdrop
-    md-whiteframe="4">
-    <md-toolbar class="md-theme-indigo">
-      <h1 class="md-toolbar-tools">Sidenav Left</h1>
-    </md-toolbar>
-    <md-content layout-padding>
-      <md-button class="md-primary" hide-gt-md>
-        Close Sidenav Left
-      </md-button>
-      <p hide-md show-gt-md>
-        LOG {{project.log}}
-      </p>
-    </md-content>
-  </md-sidenav>
-
-  <h1>PROJETO </h1>
-  <!--<h6>{{project.project | json}}</h6>-->
+  <h1>{{project.project.name}} </h1>
 
   <div flex-offset="80">
-    <md-button class="md-raised md-primary" ng-click="project.log=true"> LOG </md-button>
+    <!--<md-button class="md-raised md-primary" ng-click="project.log=true"> LOG </md-button>-->
 
-    <md-button ng-click="project.manageMembers($event, project)">Gerenciar membros</md-button>
+    <md-button ng-click="project.manageMembers($event, project.project)">Gerenciar membros</md-button>
+    <md-button ng-click="project.addActivity($event, project.project)">Gerenciar atividades </md-button>
+    <md-button ng-click="project.manageMilestone($event)">Gerenciar eMilestone </md-button>
   </div>
 
 
@@ -48,15 +29,21 @@
       </div>
     </div>
 
+<!--
     <div flex="20" ng-if="project.teste" style="background: blue">
-
+      <h3>Anotações da atividade</h3>
+      <div ng-repeat="note in ['1','2','3' ]">
+        {{note}}
+      </div>
     </div>
 
     <div flex="20" ng-if="project.log" style="background: red">
-
     </div>
+-->
+
 
   </div>
+
 
 
 </md-content>
