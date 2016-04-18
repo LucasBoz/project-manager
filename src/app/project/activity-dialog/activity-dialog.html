@@ -1,0 +1,46 @@
+<md-dialog aria-label="Mango (Fruit)">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>atividade</h2>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px; padding: 20px">
+      <form name="invitationForm">
+
+        <br class="form-group">
+            <md-input-container>
+              <label>Nome da atividade</label>
+               <input class="form-control" placeholder="Atividade" ng-model="activity.activity.name" required="true"/>
+                <!--<div ng-messages="invitation.email.$error">-->
+                  <!--<div ng-message="required">This is required.</div>-->
+                <!--</div>-->
+            </md-input-container>
+
+            <md-input-container>
+              <label>Milestone</label>
+              <md-select ng-model="activity.activity.milestone">
+                <md-option ng-repeat="milestone in  activity.milestones">
+                  {{milestone.name}}
+                </md-option>
+              </md-select>
+            </md-input-container>
+
+
+        </div>
+
+      </form>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+
+      <span flex></span>
+      <md-button ng-click="activity.answer()" >
+        Cancelar
+      </md-button>
+      <md-button ng-click="activity.answer(act)" style="margin-right:20px;" >
+        OK
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

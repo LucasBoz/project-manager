@@ -1,0 +1,39 @@
+<md-dialog aria-label="Mango (Fruit)">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Novo projeto</h2>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px; padding: 20px">
+      <form name="invitationForm">
+
+        <div class="form-group">
+            <md-input-container>
+              <label>Nome do projeto</label>
+               <input class="form-control" autocomplete="off" placeholder="Novo projeto" name="email" ng-model="project.newProject.name" required="true"/>
+                <div ng-messages="main.newProject.$error">
+                  <div ng-message="required">This is required.</div>
+                </div>
+            </md-input-container>
+
+          <md-datepicker ng-model="project.newProject.start" md-placeholder="Início"></md-datepicker>
+          <md-datepicker ng-model="project.newProject.end" md-placeholder="Término"></md-datepicker>
+
+        </div>
+{{project.newProject}}
+      </form>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+
+      <span flex></span>
+      <md-button ng-click="project.hide()" >
+        Cancelar
+      </md-button>
+      <md-button ng-click="project.answer(project.newProject)" style="margin-right:20px;" >
+        OK
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
