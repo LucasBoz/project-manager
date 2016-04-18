@@ -1,31 +1,13 @@
 <md-content layout="column" layout-fill flex>
 
 
-  <md-sidenav
-    class="md-sidenav-right"
-    md-component-id="right"
-    md-is-open="true"
-    md-is-locked-open="true"
-    md-disable-backdrop
-    md-whiteframe="4">
-    <md-toolbar class="md-theme-indigo">
-      <h1 class="md-toolbar-tools">Sidenav Left</h1>
-    </md-toolbar>
-    <md-content layout-padding>
-      <md-button class="md-primary" hide-gt-md>
-        Close Sidenav Left
-      </md-button>
-      <p hide-md show-gt-md>
-        LOG {{project.log}}
-      </p>
-    </md-content>
-  </md-sidenav>
+
 
   <h1>PROJETO </h1>
-  <!--<h6>{{project.project | json}}</h6>-->
+  <h6>{{project.project | json}}</h6>
 
   <div flex-offset="80">
-    <md-button class="md-raised md-primary" ng-click="project.log=true"> LOG </md-button>
+    <md-button class="md-raised md-primary" ng-click="project.log=true"> LOG</md-button>
 
     <md-button ng-click="project.manageMembers($event, project)">Gerenciar membros</md-button>
   </div>
@@ -33,15 +15,16 @@
 
   <div layout="row">
 
+
     <div flex>
 
-      <div ng-repeat="milestone in project.project.milestones">
+      <div ng-repeat="activity in project.project.activities">
 
-        <md-subheader class="md-no-sticky">{{milestone.name}}</md-subheader>
+        <!--<md-subheader class="md-no-sticky">{{milestone.name}}</md-subheader>-->
 
-        <md-list-item ng-repeat="activity in milestone.activities" ng-click="project.teste = true">
-          <md-checkbox ng-model="activity.selected"></md-checkbox>
-          <p>{{activity.name}}</p>
+        <md-list-item>
+          <!--<md-checkbox ng-model="activity.selected"></md-checkbox>-->
+          <p>{{activity.name}} - {{activity.milestone.name}}</p>
           <md-button class="md-primary">teste</md-button>
         </md-list-item>
         <md-divider></md-divider>
@@ -51,12 +34,9 @@
     <div flex="20" ng-if="project.teste" style="background: blue">
 
     </div>
-
     <div flex="20" ng-if="project.log" style="background: red">
 
     </div>
-
   </div>
-
 
 </md-content>

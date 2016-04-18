@@ -12,8 +12,16 @@
 
     vm.id = $routeParams.id;
 
+    vm.project = { activities : [] };
+
     dataService.findProject("").success(function(data){
       vm.project = data;
+    }).error(function(message){
+      $log.debug(message);
+    });
+
+    dataService.findActivitiesByProject().success(function(data){
+      vm.project.activities = data;
     }).error(function(message){
       $log.debug(message);
     });

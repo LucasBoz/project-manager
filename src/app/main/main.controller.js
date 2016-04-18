@@ -6,10 +6,11 @@
     .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($location, Project, $log, dataService, $mdSidenav) {
+  function MainController($location, $log, dataService, $mdSidenav) {
     var vm = this;
 
-    dataService.find("").success(function(data){
+
+    dataService.findProject().success(function(data){
       vm.projects = data;
     }).error(function(message){
       $log.debug(message);
@@ -23,9 +24,9 @@
         .toggle()
     };
 
-    vm.openProject = function(id){
-      $location.path('project/' + id);
-      $log.debug("project " + id);
+    vm.openProject = function(project){
+      $location.path('project/' + project.id);
+      $log.debug("project " + project.id);
     };
 
   }
