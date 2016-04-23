@@ -14,7 +14,13 @@
     var vm = this;
 
 
-    dataService.findProject().success(function(data){
+    // dataService.findProject().success(function(data){
+    //   vm.project = data;
+    // }).error(function(message){
+    //   $log.debug(message);
+    // });
+
+    dataService.get().success(function(data){
       vm.projects = data;
     }).error(function(message){
       $log.debug(message);
@@ -33,7 +39,7 @@
       $log.debug("project " + project.id);
     };
 
-    vm.manageMembers = function(ev, projects){
+    vm.newProjectModal = function(ev, projects){
 
       $mdDialog.show({
           controller: ProjectController,

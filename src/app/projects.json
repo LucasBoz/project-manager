@@ -1,19 +1,47 @@
 [{
   "id": 1,
-  "name": "proj asd"
+  "name": "proj asd",
+  "initialDate":"2016-04-11T03:00:00.000Z",
+  "finalDate":"2016-04-11T03:00:00.000Z",
+  "status":"1",
+  "projectManager":{
+    "name":"Gerente do projeto"
+  }
+
 },{
   "id": 2,
-  "name": "proj 1"
+  "name": "proj 1",
+  "initialDate":"2016-04-11T03:00:00.000Z",
+  "finalDate":"2016-04-11T03:00:00.000Z",
+  "status":"1",
+  "projectManager":{
+    "name":"Gerente do projeto"
+  }
 },{
   "id": 3,
-  "name": "proj 33333"
+  "name": "proj 33333",
+  "initialDate":"2016-04-11T03:00:00.000Z",
+  "finalDate":"2016-04-11T03:00:00.000Z",
+  "status":"1",
+  "projectManager":{
+    "name":"Gerente do projeto"
+  }
 },{
   "id": 4,
-  "name": "proj 4"
+  "name": "proj 4",
+  "initialDate":"2016-04-11T03:00:00.000Z",
+  "finalDate":"2016-04-11T03:00:00.000Z",
+  "status":"1",
+  "projectManager":{
+    "name":"Gerente do projeto"
+  }
 },{
   "id": 5,
-  "name": "proj 555"
-},{
-  "id": 6,
-  "name": "proj 66"
+  "name": "proj 555",
+  "initialDate":"2016-04-11T03:00:00.000Z",
+  "finalDate":"2016-04-11T03:00:00.000Z",
+  "status":"1",
+  "projectManager":{
+    "name":"Gerente do projeto"
+  }
 }]

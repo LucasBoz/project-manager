@@ -20,11 +20,13 @@
       $log.debug(message);
     });
 
-    dataService.findActivitiesByProject().success(function(data){
-      vm.project.activities = data;
-    }).error(function(message){
-      $log.debug(message);
-    });
+    $log.debug(vm.project);
+
+    // dataService.findActivitiesByProject().success(function(data){
+    //   vm.project.activities = data;
+    // }).error(function(message){
+    //   $log.debug(message);
+    // });
 
 
     $log.debug($routeParams.id);
@@ -75,7 +77,7 @@
         });
     };
 
-    vm.manageMilestone = function(ev){
+    vm.manageMilestone = function(ev, project){
 
 
       $mdDialog.show({
@@ -84,7 +86,8 @@
           templateUrl: 'app/project/milestone-dialog/milestone-dialog.html',
           //parent: angular.element(document.body),
           targetEvent: ev,
-          clickOutsideToClose:true
+          clickOutsideToClose:true,
+          locals: { project : project}
         })
         .then(function(answer) {
           vm.status = 'You said the information was "' + answer + '".';
@@ -96,7 +99,7 @@
     //------------
     //  DIALOG CONTROLLER
     //------------
-    function MembersController(project){
+    function MembersController(){
       $log.debug('MembersController');
 
       var vm = this;
@@ -113,6 +116,9 @@
       };
       vm.answer = function(answer) {
         $mdDialog.hide(answer);
+        
+       
+        
       };
     }
     function ActivityController(project){
@@ -131,7 +137,7 @@
       vm.answer = function(answer) {
         $mdDialog.hide(answer);
 
-        project.milestones[ project.milestones.indexOf(vm.activity.milestone)].activity.push(vm.activity)
+        project.milestones[ project.milestones.indexOf(vm.activity.milestone)].activity.push(vm.activity);
 
       };
     }
@@ -139,8 +145,6 @@
       $log.debug('MembersController');
 
       var vm = this;
-
-
 
       vm.modal = "TEST";
 
@@ -152,6 +156,10 @@
       };
       vm.answer = function(answer) {
         $mdDialog.hide(answer);
+
+        project.milestones.push();
+        //TODO Backend here
+        
       };
     }
 

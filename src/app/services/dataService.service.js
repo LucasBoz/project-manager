@@ -18,10 +18,26 @@
 
         get : function(id, table, page) {
           if(id){
-            return $http.get(endPoint + table + '/' + id);
+            return $http.get(endPoint);
           }
           return $http({
-              url: endPoint + table,
+              url: endPoint,
+              method: 'GET',
+              params: {
+                page: page,
+                limit: 10
+              }
+            }
+          );
+        },
+
+
+        findProject : function(id, table, page) {
+          if(id){
+            return $http.get('http://localhost:3000/app/project.json');
+          }
+          return $http({
+              url: 'http://localhost:3000/app/project.json',
               method: 'GET',
               params: {
                 page: page,
@@ -42,14 +58,7 @@
             }
           );
         },
-        findProject : function() {
 
-          return $http({
-              url: "http://localhost:3000/app/project.json",
-              method: 'GET'
-            }
-          );
-        },
 
         save : function(data, table) {
           return $http({

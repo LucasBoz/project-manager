@@ -1,23 +1,30 @@
 <md-content layout="column" layout-fill flex>
 
 
-  <md-button ng-click="main.manageMembers($event, main.projects)">Novo projeto</md-button>
+  <md-button ng-click="main.newProjectModal($event, main.projects)">Novo projeto</md-button>
 
     <md-grid-list  layout="row" layout-align="center start"
                    style="padding-left: 5%; padding-top: 20px"
-                   md-cols-gt-md="4" md-cols-md="3" md-cols-sm="1"
-                   md-row-height="4:3"
-                   md-gutter="10px" >
+
+                   md-cols-gt-md="4" md-cols-md="3" md-cols-sm="2" md-cols="1"
+                   md-row-height-gt-md="4:3" md-row-height="4:3"
+                   md-gutter="10px">
+
+                   <!--md-cols-gt-md="4" md-cols-md="3" md-cols-sm="1"-->
+                   <!--md-row-height="4:3"-->
+                   <!--md-gutter="10px" >-->
+
+
 
         <md-grid-tile ng-repeat="project in main.projects" >
 
 
             <md-content style="padding:10px; height: 200px; width: 270px" class="md-whiteframe-6dp" ng-click="main.openProject(project.id)">
-
                 <h2>{{project.name}}</h2>
                 <md-divider></md-divider>
-                <p>Nome do dono do projeto</p>
-                <p>00/00/0000 - 00/00/0000</p>
+                <p>{{project.projectManager.name}}</p>
+                <p>Status : {{project.status}}</p>
+                <p>{{project.startDate | date:'dd/MM/yyyy'}} - {{project.finalDate | date:'dd/MM/yyyy' }}</p>
                 <md-progress-linear md-mode="determinate" ng-value="{{project.id * 15}}"></md-progress-linear>
 
             </md-content>
