@@ -116,15 +116,15 @@
       };
       vm.answer = function(answer) {
         $mdDialog.hide(answer);
-        
-       
-        
+
       };
     }
     function ActivityController(project){
       $log.debug('ActivityController');
 
       var vm = this;
+
+      vm.newActivity = {};
 
       vm.milestones = project.milestones;
 
@@ -137,11 +137,16 @@
       vm.answer = function(answer) {
         $mdDialog.hide(answer);
 
-        project.milestones[ project.milestones.indexOf(vm.activity.milestone)].activity.push(vm.activity);
+        // project.milestones[ project.milestones.indexOf(vm.newActivity.milestone)].activities.push(vm.newActivity);
+        if(vm.newActivity.milestones){
+          project.milestones[ 0 ].activities.push(vm.newActivity);
+        }else{
+          project.activities.push(vm.newActivity);
+        }
 
       };
     }
-    function MilestoneController(){
+    function MilestoneController(project){
       $log.debug('MembersController');
 
       var vm = this;
@@ -154,12 +159,15 @@
       vm.cancel = function() {
         $mdDialog.cancel();
       };
-      vm.answer = function(answer) {
-        $mdDialog.hide(answer);
 
-        project.milestones.push();
+      vm.answer = function() {
+        $mdDialog.hide();
+
+        $log.debug(project);
+
+        project.milestones.push(vm.newMilestone);
         //TODO Backend here
-        
+
       };
     }
 

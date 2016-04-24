@@ -44,57 +44,6 @@
     },
 
     {
-      "name": "MILE 1",
-      "description": "asdhasdn asçd ,asdmi masdasl",
-      "activities": [
-        {
-          "name" : "acti 1",
-          "status":true,
-          "owner": {
-            "name":"responsavel pela atividade"
-          }
-        },{
-          "name" : "acti so hard",
-          "owner": {
-            "name":"responsavel pela atividade"
-          },
-          "notes": [
-            {
-              "name": "note 1 ",
-              "description": "chamqwe"
-            },
-            {
-              "name": "notw 2",
-              "description": "hell you two then other sites"
-            }
-          ]
-        },
-        {
-          "name" : "acti 1",
-          "owner": {
-            "name":"responsavel pela atividade"
-          }
-        },{
-          "name" : "acti so hard",
-          "owner": {
-            "name":"responsavel pela atividade"
-          }
-        },
-        {
-          "name" : "acti 1",
-          "owner": {
-            "name":"responsavel pela atividade"
-          }
-        },{
-          "name" : "actid dsf s",
-          "owner": {
-            "name":"responsavel pela atividade"
-          }
-        }
-      ]
-    },
-
-    {
       "name": "MILE 2",
       "description": "asdhasdn asçd ,asdmi masdasl",
       "activities": [

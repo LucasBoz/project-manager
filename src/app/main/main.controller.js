@@ -31,7 +31,7 @@
     vm.openSidenav = function(){
       $log.debug("OPEN SIDENAVEE");
       $mdSidenav('left')
-        .toggle()
+        .toggle();
     };
 
     vm.openProject = function(project){

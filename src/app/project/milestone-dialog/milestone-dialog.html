@@ -1,4 +1,4 @@
-<md-dialog aria-label="Mango (Fruit)">
+<md-dialog>
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -7,25 +7,20 @@
       </div>
     </md-toolbar>
     <md-dialog-content style="max-width:800px;max-height:810px; padding: 20px">
-      <form name="invitationForm">
+      <form name="milestoneForm">
 
         <div class="form-group">
           <md-input-container>
-            <label>Nome da atividade</label>
-            <input type="email" class="form-control" autocomplete="off" placeholder="New member email" id="email" name="email" ng-model="invitation.email" required="true"/>
+            <label>Nome do milestone</label>
+            <input class="form-control" autocomplete="off" placeholder="Milestone" ng-model="milestone.newMilestone.name" required="true"/>
             <div ng-messages="invitation.email.$error">
               <div ng-message="required">This is required.</div>
             </div>
           </md-input-container>
 
-          <md-input-container>
-            <label>Milestone</label>
-            <md-select ng-model="ctrl.userState">
-              <md-option ng-repeat="milestone in ['diasha','asdhnas','skadnljasd']">
-                {{milestone}}
-              </md-option>
-            </md-select>
-          </md-input-container>
+          <md-datepicker ng-model="milestone.newMilestone.initialDate" md-placeholder="Início"></md-datepicker>
+          <md-datepicker ng-model="milestone.newMilestone.finalDate" md-placeholder="Término"></md-datepicker>
+
         </div>
 
       </form>
@@ -33,10 +28,10 @@
     <md-dialog-actions layout="row">
 
       <span flex></span>
-      <md-button ng-click="members.answer('not useful')" >
+      <md-button ng-click="milestone.cancel()" >
         Cancelar
       </md-button>
-      <md-button ng-click="members.answer('useful')" style="margin-right:20px;" >
+      <md-button ng-click="milestone.answer()" style="margin-right:20px;" >
         OK
       </md-button>
     </md-dialog-actions>
