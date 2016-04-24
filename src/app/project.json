@@ -10,6 +10,7 @@
   },
   "activities":[
     {
+      "id":"1",
       "name" : "acti 1 sem milestone",
       "status":true,
       "owner": {
@@ -17,6 +18,7 @@
       }
 
     },{
+      "id":"2",
       "name" : "acti 2 sem mile",
       "owner": {
         "name":"responsavel pela atividade"
@@ -25,15 +27,20 @@
   ],
   "milestones": [
     {
+      "id":"1",
       "name": "MILE 0",
-      "description": "asdhasdn asçd ,asdmi masdasl",
+      "notes": "asdhasdn asçd ,asdmi masdasl",
+      "initialDate":"2016-04-11T03:00:00.000Z",
+      "finalDate":"2016-04-11T03:00:00.000Z",
       "activities": [
         {
+          "id":"3",
           "name" : "acti 1",
           "owner": {
             "name":"responsavel pela atividade"
           }
         },{
+          "id":"4",
           "name" : "acti so hard",
           "status":true,
           "owner": {
@@ -44,15 +51,20 @@
     },
 
     {
+      "id":"2",
       "name": "MILE 2",
-      "description": "asdhasdn asçd ,asdmi masdasl",
+      "notes": "asdhasdn asçd ,asdmi masdaslasdhasdn asçd ,asdmi masdaslasdhasdn asçd ,asdmi masdaslasdhasdn asçd ,asdmi masdasl",
+      "initialDate":"2016-04-11T03:00:00.000Z",
+      "finalDate":"2016-04-11T03:00:00.000Z",
       "activities": [
         {
+          "id":"5",
           "name" : "acti 1",
           "owner": {
             "name":"responsavel pela atividade"
           }
         },{
+          "id":"6",
           "name" : "acti so hard",
           "owner": {
             "name":"responsavel pela atividade"

@@ -13,6 +13,34 @@
 
     var vm = this;
 
+    vm.status = [
+      {
+        id:1,
+        description:'Aberto',
+        color:'green'
+      },
+      {
+        id:2,
+        description:'Em execução',
+        color:'yellow'
+      },
+      {
+        id:3,
+        description:'Parado',
+        color:'orange'
+      },
+      {
+        id:4,
+        description:'Concluido',
+        color:'blue'
+      },
+      {
+        id:5,
+        description:'Cancelado',
+        color:'red'
+      }
+    ];
+
 
     // dataService.findProject().success(function(data){
     //   vm.project = data;

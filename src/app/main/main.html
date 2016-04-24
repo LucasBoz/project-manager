@@ -18,12 +18,24 @@
 
         <md-grid-tile ng-repeat="project in main.projects" >
 
+          <!--ng-click="main.openProject(project.id)"-->
+            <md-content style="padding:10px; height: 200px; width: 270px" ng-click="main.openProject(project.id)" class="md-whiteframe-6dp" >
+                <div layout="row">
+                  <h2>{{project.name}}</h2>
 
-            <md-content style="padding:10px; height: 200px; width: 270px" class="md-whiteframe-6dp" ng-click="main.openProject(project.id)">
-                <h2>{{project.name}}</h2>
+                  <md-select ng-model="project.status" style="margin: 0" ng-click="$event.stopPropagation();">
+                    <md-option ng-value="status.id" ng-repeat="status in main.status">
+                      <div layout="row">
+                        <div ng-style="{'background-color': status.color}"
+                             style="border-radius: 50%; height: 17px; width: 17px;"></div>
+                        <p style="margin: 0 0 0 10px">{{status.description}}</p>
+                      </div>
+                    </md-option>
+                  </md-select>
+
+                </div>
                 <md-divider></md-divider>
                 <p>{{project.projectManager.name}}</p>
-                <p>Status : {{project.status}}</p>
                 <p>{{project.startDate | date:'dd/MM/yyyy'}} - {{project.finalDate | date:'dd/MM/yyyy' }}</p>
                 <md-progress-linear md-mode="determinate" ng-value="{{project.id * 15}}"></md-progress-linear>
 

@@ -9,7 +9,8 @@
     <md-dialog-content style="max-width:800px;max-height:810px; padding: 20px">
       <form name="milestoneForm">
 
-        <div class="form-group">
+        <div class="form-group" layout="column">
+
           <md-input-container>
             <label>Nome do milestone</label>
             <input class="form-control" autocomplete="off" placeholder="Milestone" ng-model="milestone.newMilestone.name" required="true"/>
@@ -18,8 +19,15 @@
             </div>
           </md-input-container>
 
-          <md-datepicker ng-model="milestone.newMilestone.initialDate" md-placeholder="Início"></md-datepicker>
-          <md-datepicker ng-model="milestone.newMilestone.finalDate" md-placeholder="Término"></md-datepicker>
+          <md-input-container>
+            <label>Descrição</label>
+            <input class="form-control" autocomplete="off" placeholder="Descrição" ng-model="milestone.newMilestone.notes"/>
+          </md-input-container>
+
+          <div layout="row">
+            <md-datepicker ng-model="milestone.newMilestone.initialDate" md-placeholder="Início"></md-datepicker>
+            <md-datepicker ng-model="milestone.newMilestone.finalDate" md-placeholder="Término"></md-datepicker>
+          </div>
 
         </div>
 

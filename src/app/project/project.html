@@ -1,34 +1,38 @@
-
 <md-content layout="column" layout-fill flex style="padding: 0 0 0 20px">
 
   <div layout="row">
 
-    <h1> {{project.project.name}}  </h1>
-    <p> Status: {{project.project.status}} Gerente: {{project.project.projectManager.name}} </p>
+    <h1> {{project.project.name}} </h1>
 
-
-
-    <md-select ng-model="project.project.milestones">
-      <md-option ng-repeat="milestone in  project.project.milestones" >
+    <md-select aria-label="status" ng-model="project.project.status" style="margin: 0">
+      <md-option ng-value="status.id" ng-repeat="status in project.status track by $index">
         <div layout="row">
-          <div style="background :red; height: 20px; width: 20px; margin-top: 17px;"></div>
-          <p>{{milestone.name}}</p>
+          <div ng-style="{'background-color': status.color}"
+               style="border-radius: 50%; height: 17px; width: 17px;"></div>
+          <p style="margin: 0 0 0 10px">{{status.description}}</p>
         </div>
       </md-option>
     </md-select>
+
+    <p> Gerente: {{project.project.projectManager.name}} </p>
 
   </div>
 
   <p>{{project.project.initialDate | date:'dd/MM/yyyy'}} - {{project.project.finalDate | date:'dd/MM/yyyy'}}</p>
 
 
-
   <div layout="row" flex-offset="50">
     <!--<md-button class="md-raised md-primary" ng-click="project.log=true"> LOG </md-button>-->
 
-    <md-button class="md-raised md-primary" ng-click="project.manageMembers($event, project.project)">Gerenciar membros</md-button>
-    <md-button class="md-raised md-primary" ng-click="project.addActivity($event, project.project)">Gerenciar atividades </md-button>
-    <md-button class="md-raised md-primary" ng-click="project.manageMilestone($event,project.project)">Gerenciar Milestone </md-button>
+    <!--<md-button class="md-raised md-primary" ng-click="project.manageMembers($event, project.project)">-->
+    <!--membros-->
+    <!--</md-button>-->
+    <md-button class="md-raised md-primary" ng-click="project.manageActivity($event, project.project)">
+      atividades
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="project.manageMilestone($event,project.project)">
+      Milestone
+    </md-button>
 
   </div>
 
@@ -37,44 +41,59 @@
 
     <div flex>
 
-      <md-list-item  ng-repeat="activity in project.project.activities">
+      <md-list-item ng-repeat="activity in project.project.activities">
         <md-checkbox ng-model="activity.status"></md-checkbox>
         <p>{{activity.name }} - {{activity.owner.name}}</p>
-        <md-button class="md-primary">teste</md-button>
+        <md-button class="md-primary" ng-click="project.manageActivity($event, project.project, activity)">Editar
+        </md-button>
+        <md-button class="md-primary" ng-click="project.removeActivity($event, project.project, activity)">Remover
+        </md-button>
+
       </md-list-item>
 
       <md-divider></md-divider>
 
       <div ng-repeat="milestone in project.project.milestones">
 
-        <md-subheader class="md-no-sticky">{{milestone.name}}</md-subheader>
+        <md-subheader class="md-no-sticky">
+          <div>
 
-        <md-list-item  ng-repeat="activity in milestone.activities">
+            <div layout="row" style="margin-bottom: 10px;">
+              <div>
+                {{milestone.name}} ({{milestone.initialDate | date:'dd/MM/yyyy'}} - {{milestone.finalDate
+                |date:'dd/MM/yyyy'}})
+              </div>
+              <div>
+                <md-button ng-click="project.manageMilestone($event,project.project, milestone )"> Editar</md-button>
+                <md-button ng-click="project.removeMilestone($event,project.project, milestone )"> Remove</md-button>
+              </div>
+            </div>
+            <div>
+              {{milestone.notes}}
+            </div>
+
+          </div>
+
+        </md-subheader>
+
+        <md-list-item ng-repeat="activity in milestone.activities">
 
           <md-checkbox ng-model="activity.status"></md-checkbox>
           <p>{{activity.name }} - {{activity.owner.name}}</p>
-          <md-button class="md-primary">teste</md-button>
+
+          <md-button class="md-primary" ng-click="project.manageActivity($event, project.project, activity, milestone)">
+            Editar
+          </md-button>
+          <md-button class="md-primary" ng-click="project.removeActivity($event, project.project, activity, milestone)">
+            Remover
+          </md-button>
 
         </md-list-item>
 
         <md-divider></md-divider>
       </div>
 
-
     </div>
-
-<!--
-    <div flex="20" ng-if="project.teste" style="background: blue">
-      <h3>Anotações da atividade</h3>
-      <div ng-repeat="note in ['1','2','3' ]">
-        {{note}}
-      </div>
-    </div>
-    <div flex="20" ng-if="project.log" style="background: red">
-    </div>
-
--->
-
 
   </div>
 

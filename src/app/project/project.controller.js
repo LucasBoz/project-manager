@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -10,13 +10,41 @@
 
     var vm = this;
 
+    vm.status = [
+      {
+        id: 1,
+        description: 'Aberto',
+        color: 'green'
+      },
+      {
+        id: 2,
+        description: 'Em execução',
+        color: 'yellow'
+      },
+      {
+        id: 3,
+        description: 'Parado',
+        color: 'orange'
+      },
+      {
+        id: 4,
+        description: 'Concluido',
+        color: 'blue'
+      },
+      {
+        id: 5,
+        description: 'Cancelado',
+        color: 'red'
+      }
+    ];
+
     vm.id = $routeParams.id;
 
-    vm.project = { activities : [] };
+    vm.project = {activities: []};
 
-    dataService.findProject("").success(function(data){
+    dataService.findProject("").success(function (data) {
       vm.project = data;
-    }).error(function(message){
+    }).error(function (message) {
       $log.debug(message);
     });
 
@@ -32,74 +60,91 @@
     $log.debug($routeParams.id);
 
 
-
-
     // ------------------
     // Functions
     //------------------
 
+    vm.removeActivity = function (ev, project, activity, milestone) {
+      var confirm = $mdDialog.confirm()
+        .title('Deseja remover essa atividade?')
+        .targetEvent(ev)
+        .ok('Remover')
+        .cancel('Cancelar');
+      $mdDialog.show(confirm).then(function() {
+        if(milestone){
+          milestone.activities.splice( milestone.activities.indexOf(activity), 1 );
+        } else {
+          project.activities.splice( project.activities.indexOf(activity), 1 );
+        }
+      });
+    };
+
+    vm.removeMilestone = function (ev, project, milestone) {
+      var confirm = $mdDialog.confirm()
+        .title('Deseja remover esse milestone?')
+        .targetEvent(ev)
+        .ok('Remover')
+        .cancel('Cancelar');
+      $mdDialog.show(confirm).then(function() {
+        project.milestones.splice( project.milestones.indexOf(milestone), 1 );
+      });
+    };
 
 
-  vm.addActivity = function(ev, project){
+    vm.manageActivity = function (ev, project, activity, milestone) {
 
       $mdDialog.show({
           controller: ActivityController,
-          controllerAs : 'activity',
+          controllerAs: 'activity',
           templateUrl: 'app/project/activity-dialog/activity-dialog.html',
           targetEvent: ev,
-          clickOutsideToClose:true,
-          locals : {project : project}
+          clickOutsideToClose: true,
+          locals: {project: project, activity: activity, milestone: milestone}
         })
-        .then(function(answer) {
-          vm.status = 'You said the information was "' + answer + '".';
-        }, function() {
-          vm.status = 'Yo diu cancelled thealog.';
+        .then(function (answer) {
+
         });
     };
 
-    vm.manageMembers = function(ev, project){
+    vm.manageMembers = function (ev, project) {
       //var project = angular.copy(vm.project);
       $log.debug(project);
 
       $mdDialog.show({
           controller: MembersController,
-          controllerAs : 'members',
+          controllerAs: 'members',
           templateUrl: 'app/project/members-dialog/members-dialog.html',
           //parent: angular.element(document.body),
           targetEvent: ev,
-          clickOutsideToClose:true,
-          locals: { project : project}
+          clickOutsideToClose: true,
+          locals: {project: project}
         })
-        .then(function(answer) {
-          vm.status = 'You said the information was "' + answer + '".';
-        }, function() {
-          vm.status = 'You cancelled the dialog.';
+        .then(function (answer) {
+
         });
     };
 
-    vm.manageMilestone = function(ev, project){
+    vm.manageMilestone = function (ev, project, milestone) {
 
 
       $mdDialog.show({
           controller: MilestoneController,
-          controllerAs : 'milestone',
+          controllerAs: 'milestone',
           templateUrl: 'app/project/milestone-dialog/milestone-dialog.html',
           //parent: angular.element(document.body),
           targetEvent: ev,
-          clickOutsideToClose:true,
-          locals: { project : project}
+          clickOutsideToClose: true,
+          locals: {project: project, milestone: milestone}
         })
-        .then(function(answer) {
-          vm.status = 'You said the information was "' + answer + '".';
-        }, function() {
-          vm.status = 'You cancelled the dialog.';
+        .then(function (answer) {
+
         });
     };
 
     //------------
     //  DIALOG CONTROLLER
     //------------
-    function MembersController(){
+    function MembersController() {
       $log.debug('MembersController');
 
       var vm = this;
@@ -108,69 +153,92 @@
 
       vm.modal = "TEST";
 
-      vm.hide = function() {
+      vm.hide = function () {
         $mdDialog.hide();
       };
-      vm.cancel = function() {
+      vm.cancel = function () {
         $mdDialog.cancel();
       };
-      vm.answer = function(answer) {
+      vm.answer = function (answer) {
         $mdDialog.hide(answer);
 
       };
     }
-    function ActivityController(project){
+
+    function ActivityController(project, activity, milestone) {
       $log.debug('ActivityController');
 
       var vm = this;
 
-      vm.newActivity = {};
+      vm.newActivity = activity;
+
+      vm.milestone = milestone;
+
+      vm.oldMilestone = milestone;
 
       vm.milestones = project.milestones;
 
-      vm.hide = function() {
+      vm.hide = function () {
         $mdDialog.hide();
       };
-      vm.cancel = function() {
+      vm.cancel = function () {
         $mdDialog.cancel();
       };
-      vm.answer = function(answer) {
+      vm.answer = function (answer) {
         $mdDialog.hide(answer);
+        //TODO arrumar estrutura de IFs
+        if (!activity || (vm.oldMilestone != vm.milestone)) {
 
-        // project.milestones[ project.milestones.indexOf(vm.newActivity.milestone)].activities.push(vm.newActivity);
-        if(vm.newActivity.milestones){
-          project.milestones[ 0 ].activities.push(vm.newActivity);
-        }else{
-          project.activities.push(vm.newActivity);
+          if(activity){
+            if(vm.oldMilestone){
+              vm.oldMilestone.activities.splice(vm.oldMilestone.activities.indexOf(activity), 1);
+            } else{
+              project.activities.splice(project.activities.indexOf(activity), 1);
+            }
+          }
+
+          if (vm.milestone) {
+            //TODO pegar o indice do milestone do select
+            project.milestones[ 1 ].activities.push(vm.newActivity);
+          } else {
+            project.activities.push(vm.newActivity);
+          }
         }
 
       };
     }
-    function MilestoneController(project){
+
+    function MilestoneController(project, milestone) {
       $log.debug('MembersController');
 
       var vm = this;
 
-      vm.modal = "TEST";
+      vm.newMilestone = milestone;
 
-      vm.hide = function() {
+      if (vm.newMilestone) {
+        vm.newMilestone.initialDate = new Date(vm.newMilestone.initialDate);
+        vm.newMilestone.finalDate = new Date(vm.newMilestone.finalDate);
+      }
+
+      vm.hide = function () {
         $mdDialog.hide();
       };
-      vm.cancel = function() {
+      vm.cancel = function () {
         $mdDialog.cancel();
       };
 
-      vm.answer = function() {
+      vm.answer = function () {
         $mdDialog.hide();
 
         $log.debug(project);
 
-        project.milestones.push(vm.newMilestone);
+        if(!vm.newMilestone.id){
+          project.milestones.push(vm.newMilestone);
+        }
         //TODO Backend here
 
       };
     }
-
 
 
   }
