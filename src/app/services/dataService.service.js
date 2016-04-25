@@ -31,6 +31,9 @@
           );
         },
 
+        listAllProjects : function () {
+          return $http.get('http://localhost:8080/listAllProjects');
+        },
 
         findProject : function(id, table, page) {
           if(id){

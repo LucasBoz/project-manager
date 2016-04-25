@@ -9,35 +9,36 @@
 
 
 
-  function MainController($location, $mdDialog, $log, dataService, $mdSidenav) {
+  function MainController($location, $mdDialog, $rootScope, $log, dataService, $mdSidenav, $http, $httpParamSerializer) {
 
     var vm = this;
 
+    $rootScope.server = "http://localhost:8080";
     vm.status = [
       {
-        id:1,
-        description:'Aberto',
-        color:'green'
+        name:'ABERTO',
+        color:'green',
+        label: "Aberto",
       },
       {
-        id:2,
-        description:'Em execução',
-        color:'yellow'
+        name:'EM_EXECUCAO',
+        color:'yellow',
+        label: "Em execução"
       },
       {
-        id:3,
-        description:'Parado',
-        color:'orange'
+        name:'PARADO',
+        color:'orange',
+        label: "Parado"
       },
       {
-        id:4,
-        description:'Concluido',
-        color:'blue'
+        name:'CONCLUIDO',
+        color:'blue',
+        label: "Concluido"
       },
       {
-        id:5,
-        description:'Cancelado',
-        color:'red'
+        name:'CANCELADO',
+        color:'red',
+        label: "Cancelado"
       }
     ];
 
@@ -47,12 +48,12 @@
     // }).error(function(message){
     //   $log.debug(message);
     // });
-
-    dataService.get().success(function(data){
-      vm.projects = data;
-    }).error(function(message){
-      $log.debug(message);
-    });
+    dataService.listAllProjects()
+      .success(function(data){
+        vm.projects = data;
+      }).error(function(message){
+        $log.debug(message);
+      });
 
     //vm.projects = Project.all();
 
@@ -62,10 +63,21 @@
         .toggle();
     };
 
-    vm.openProject = function(project){
-      $location.path('project/' + project.id);
-      $log.debug("project " + project.id);
+    vm.openProject = function(projectId){
+      $location.path('project/' + projectId);
+      $log.debug("project " + projectId);
     };
+
+    vm.updateProjectStatus = function ( project ) {
+      console.log("maoe");
+      $http.post( $rootScope.server + "/updateProject", project )
+        .success( function ( data )  {
+          console.log("salvou")
+        })
+        .error ( function (data ){
+          console.log("deu pau")
+        })
+    }
 
     vm.newProjectModal = function(ev, projects){
 
@@ -78,32 +90,56 @@
           clickOutsideToClose:true,
           locals: { projects : projects}
         })
-        .then(function(answer) {
-          vm.status = 'You said the information was "' + answer + '".';
-        }, function() {
-          vm.status = 'You cancelled the dialog.';
-        });
+        .then(function( project ) {
+          console.log("hur dur")
+          vm.projects.push ( project );
+
+          }, function() {
+            vm.status = 'You cancelled the dialog.';
+          });
     };
 
-    function ProjectController(projects){
+
+    function ProjectController(projects, $rootScope){
       $log.debug('MembersController');
 
       var vm = this;
+      loadProjectManagers();
 
       vm.hide = function() {
         $mdDialog.hide();
       };
+
+      vm.closeOk = function ( project ) {
+        insertProject( project );
+      }
+
       vm.cancel = function() {
         $mdDialog.cancel();
       };
-      vm.answer = function(newProject) {
 
-        projects.push(newProject);
-        //TODO Backend here
+      function insertProject ( project ) {
+        $http.post( $rootScope.server + '/insertProject',project )
+          .success(function( data )
+          {
+            console.log ( data );
+            $mdDialog.hide( data );
+          }).error(function(data){
+            //TODO toast. :)
+            $log.debug( data.message )
+            
+          });
+      }
 
-        $mdDialog.hide();
-
-      };
+      function loadProjectManagers () {
+        $http.get( $rootScope.server + "/listAllUsers")
+          .success( function ( data )  {
+            vm.projectManagers = data;
+          })
+          .error ( function (data ){
+            $log.debug ( data.message );
+          })
+      }
     }
 
   }

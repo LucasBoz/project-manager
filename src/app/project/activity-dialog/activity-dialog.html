@@ -12,7 +12,15 @@
         <div class="form-group">
             <md-input-container>
               <label>Nome da atividade</label>
-               <input class="form-control" placeholder="Atividade" ng-model="activity.newActivity.name" required="true"/>
+               <input class="form-control" placeholder="Atividade" ng-model="activity.activity.name" required="true"/>
+                <!--<div ng-messages="invitation.email.$error">-->
+                  <!--<div ng-message="required">This is required.</div>-->
+                <!--</div>-->
+            </md-input-container>
+
+            <md-input-container>
+              <label>Descrição</label>
+               <input class="form-control" placeholder="Atividade" ng-model="activity.activity.description" required="true"/>
                 <!--<div ng-messages="invitation.email.$error">-->
                   <!--<div ng-message="required">This is required.</div>-->
                 <!--</div>-->
@@ -20,9 +28,21 @@
 
             <md-input-container>
               <label>Milestone</label>
-              <md-select ng-model="activity.milestone">
-                <md-option ng-repeat="milestone in activity.milestones ">
+              <md-select ng-model="activity.activity.milestone">
+                <md-option ng-value=""> n tem</md-option>
+                <md-option ng-value="milestone" ng-selected="activity.activity.milestone ? milestone.id == activity.activity.milestone.id : null" ng-repeat="milestone in activity.projectMilestones">
+
                   {{milestone.name}}
+                </md-option>
+              </md-select>
+            </md-input-container>
+
+            <md-input-container>
+              <label>Responsavel</label>
+              <md-select ng-model="activity.activity.owner">
+                <md-option ng-value=""> n tem</md-option>
+                <md-option ng-value="user" ng-selected="activity.activity.owner ? user.id == activity.activity.owner.id : null" ng-repeat="user in activity.users">
+                  {{user.name}}
                 </md-option>
               </md-select>
             </md-input-container>
@@ -36,10 +56,10 @@
     <md-dialog-actions layout="row">
 
       <span flex></span>
-      <md-button ng-click="activity.answer()" >
+      <md-button ng-click="activity.cancel()" >
         Cancelar
       </md-button>
-      <md-button ng-click="activity.answer()" style="margin-right:20px;" >
+      <md-button ng-click="activity.closeOk( activity.activity )" style="margin-right:20px;" >
         OK
       </md-button>
     </md-dialog-actions>

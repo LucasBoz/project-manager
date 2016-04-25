@@ -6,47 +6,75 @@
     .controller('ProjectController', ProjectController);
 
   /** @ngInject */
-  function ProjectController($routeParams, $mdDialog, $log, dataService) {
+  function ProjectController($routeParams, $mdDialog, $log, $rootScope, $http, $httpParamSerializer, dataService) {
 
     var vm = this;
 
+    findProjectById( $routeParams.id );
+    findMilestoneByProjectId ( $routeParams.id );
+
     vm.status = [
       {
-        id: 1,
-        description: 'Aberto',
-        color: 'green'
+        name:'ABERTO',
+        color:'green',
+        label: "Aberto",
       },
       {
-        id: 2,
-        description: 'Em execução',
-        color: 'yellow'
+        name:'EM_EXECUCAO',
+        color:'yellow',
+        label: "Em execução"
       },
       {
-        id: 3,
-        description: 'Parado',
-        color: 'orange'
+        name:'PARADO',
+        color:'orange',
+        label: "Parado"
       },
       {
-        id: 4,
-        description: 'Concluido',
-        color: 'blue'
+        name:'CONCLUIDO',
+        color:'blue',
+        label: "Concluido"
       },
       {
-        id: 5,
-        description: 'Cancelado',
-        color: 'red'
+        name:'CANCELADO',
+        color:'red',
+        label: "Cancelado"
       }
     ];
 
-    vm.id = $routeParams.id;
+    vm.milestones = []; 
 
     vm.project = {activities: []};
 
-    dataService.findProject("").success(function (data) {
-      vm.project = data;
-    }).error(function (message) {
-      $log.debug(message);
-    });
+    function findMilestoneByProjectId ( id ) {
+      $http.get( $rootScope.server + "/listMilestoneByProjectId", { params : { projectId : id }} )
+        .success( function ( data )  {
+          vm.milestones = data;
+        })
+        .error ( function (data ){
+          $log.debug (data.message);
+        })
+    }
+
+    function findProjectById ( id ) {
+      $http.get( $rootScope.server + "/findFullProjectById", { params : { 'id' : id } } )
+        .success( function ( data )  {
+          vm.project = data;
+        })
+        .error ( function (data ){
+          $log.debug (data.message);
+        })
+    }
+
+    vm.updateProjectStatus = function ( project ) {
+      console.log("maoe");
+      $http.post( $rootScope.server + "/updateProject", project )
+        .success( function ( data )  {
+          console.log("salvou")
+        })
+        .error ( function (data ){
+          console.log("deu pau")
+        })
+    }
 
     $log.debug(vm.project);
 
@@ -91,7 +119,7 @@
     };
 
 
-    vm.manageActivity = function (ev, project, activity, milestone) {
+    vm.manageActivity = function (ev, project, activity, milestones) {
 
       $mdDialog.show({
           controller: ActivityController,
@@ -99,10 +127,13 @@
           templateUrl: 'app/project/activity-dialog/activity-dialog.html',
           targetEvent: ev,
           clickOutsideToClose: true,
-          locals: {project: project, activity: activity, milestone: milestone}
+          locals: {project: project, activity: activity, milestones: milestones}
         })
-        .then(function (answer) {
-
+        .then(function ( activity ) {
+          if ( activity ) {
+            findProjectById( vm.project.id );
+          }
+          console.log ( activity );
         });
     };
 
@@ -165,18 +196,15 @@
       };
     }
 
-    function ActivityController(project, activity, milestone) {
+    function ActivityController(project, activity, milestones) {
       $log.debug('ActivityController');
 
       var vm = this;
 
-      vm.newActivity = activity;
-
-      vm.milestone = milestone;
-
-      vm.oldMilestone = milestone;
-
-      vm.milestones = project.milestones;
+      loadUsers();
+      vm.activity = activity;
+      vm.project = project;
+      vm.projectMilestones = milestones;
 
       vm.hide = function () {
         $mdDialog.hide();
@@ -184,28 +212,63 @@
       vm.cancel = function () {
         $mdDialog.cancel();
       };
-      vm.answer = function (answer) {
-        $mdDialog.hide(answer);
-        //TODO arrumar estrutura de IFs
-        if (!activity || (vm.oldMilestone != vm.milestone)) {
+      vm.closeOk = function ( activity ) {
+        if ( activity ) {
 
-          if(activity){
-            if(vm.oldMilestone){
-              vm.oldMilestone.activities.splice(vm.oldMilestone.activities.indexOf(activity), 1);
-            } else{
-              project.activities.splice(project.activities.indexOf(activity), 1);
-            }
-          }
-
-          if (vm.milestone) {
-            //TODO pegar o indice do milestone do select
-            project.milestones[ 1 ].activities.push(vm.newActivity);
+          if ( activity.milestone && activity.milestone.id ) {
+            activity.project = null;
+            var milestone = { id : activity.milestone.id , name : activity.milestone.name }
+            activity.milestone = milestone;
           } else {
-            project.activities.push(vm.newActivity);
+            activity.project = { id : project.id, name : project.name };
+            activity.milestone = null;
           }
-        }
+
+          if ( activity.id ) {
+            console.log( activity ); 
+            updateActivity ( activity );
+            
+          } else {
+            console.log ( activity );
+            insertActivity ( activity );
+          }
+
+        } else {
+          $log.debug( "Atividade nula" );
+        }        
 
       };
+
+      function insertActivity ( activity ) {
+        $http.post ( $rootScope.server + "/insertActivity", activity )
+          .success( function ( data )  {
+            $mdDialog.hide ( data );
+          })
+          .error ( function (data ){
+            $log.debug ( data.message );
+          })
+      }
+
+      function updateActivity ( activity ) {
+        $http.post ( $rootScope.server + "/updateActivity", activity )
+          .success( function ( data )  {
+            $mdDialog.hide ( data );
+          })
+          .error ( function (data ){
+            $log.debug ( data.message );
+          })
+      }
+      //FIXME usar os membros do projeto
+      function loadUsers () {
+        $http.get( $rootScope.server + "/listAllUsers")
+          .success( function ( data )  {
+            vm.users = data;
+          })
+          .error ( function (data ){
+            $log.debug ( data.message );
+          })
+      }
+
     }
 
     function MilestoneController(project, milestone) {

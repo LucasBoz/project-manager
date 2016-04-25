@@ -9,17 +9,29 @@
     <md-dialog-content style="max-width:800px;max-height:810px; padding: 20px">
       <form name="invitationForm">
 
-        <div class="form-group">
-            <md-input-container>
-              <label>Nome do projeto</label>
-               <input class="form-control" autocomplete="off" placeholder="Novo projeto" name="email" ng-model="project.newProject.name" required="true"/>
-                <div ng-messages="main.newProject.$error">
-                  <div ng-message="required">This is required.</div>
-                </div>
-            </md-input-container>
+        <div class="form-group" layout="column">
 
-          <md-datepicker ng-model="project.newProject.startDate" md-placeholder="Início"></md-datepicker>
-          <md-datepicker ng-model="project.newProject.finalDate" md-placeholder="Término"></md-datepicker>
+          <md-input-container>
+            <label>Nome do projeto</label>
+             <input class="form-control" autocomplete="off" placeholder="Novo projeto" name="email" ng-model="project.newProject.name" required="true"/>
+            <div ng-messages="main.newProject.$error">
+              <div ng-message="required">This is required.</div>
+            </div>
+          </md-input-container>
+          
+          <div layout="row">
+            <md-datepicker ng-model="project.newProject.initialDate" md-placeholder="Início"></md-datepicker>
+            <md-datepicker ng-model="project.newProject.finalDate" md-placeholder="Término"></md-datepicker>
+          </div>
+          
+          <md-input-container>
+            <label>Gerente de projeto</label>
+            <md-select ng-model="project.newProject.projectManager">
+              <md-option ng-repeat="projectManager in project.projectManagers" ng-value="projectManager">
+                {{projectManager.name}}
+              </md-option>
+            </md-select>
+          </md-input-container>
 
         </div>
 {{project.newProject}}
@@ -31,7 +43,7 @@
       <md-button ng-click="project.hide()" >
         Cancelar
       </md-button>
-      <md-button ng-click="project.answer(project.newProject)" style="margin-right:20px;" >
+      <md-button ng-click="project.closeOk(project.newProject)" style="margin-right:20px;" >
         OK
       </md-button>
     </md-dialog-actions>
