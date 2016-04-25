@@ -67,6 +67,14 @@
       $location.path('project/' + projectId);
       $log.debug("project " + projectId);
     };
+    
+
+    vm.changeToListProject = function(){
+      $location.path('/');
+    };
+
+    
+
 
     vm.updateProjectStatus = function ( project ) {
       console.log("maoe");
@@ -122,11 +130,16 @@
         $http.post( $rootScope.server + '/insertProject',project )
           .success(function( data )
           {
-            console.log ( data );
+            
             $mdDialog.hide( data );
           }).error(function(data){
             //TODO toast. :)
-            $log.debug( data.message )
+            if ( data.message && data.message.indexOf("org.hibernate.exception.ConstraintViolationException" > -1 )) {
+              $log.debug( "TOAST COM A MENSAGEM DE NOME INVALIDO QUE NAO E UNICO TODODODODODODODODODODODODODOD" );  
+            } else {
+              $log.debug( data.message );  
+            }
+            
             
           });
       }

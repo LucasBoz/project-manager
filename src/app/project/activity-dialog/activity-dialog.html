@@ -1,15 +1,15 @@
-<md-dialog>
+<md-dialog style="min-width : 400px">
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>atividade</h2>
+        <h2>Atividade</h2>
         <span flex></span>
       </div>
     </md-toolbar>
     <md-dialog-content style="max-width:800px;max-height:810px; padding: 20px">
       <form name="invitationForm">
 
-        <div class="form-group">
+        <div class="form-group" layout="column">
             <md-input-container>
               <label>Nome da atividade</label>
                <input class="form-control" placeholder="Atividade" ng-model="activity.activity.name" required="true"/>
@@ -20,7 +20,7 @@
 
             <md-input-container>
               <label>Descrição</label>
-               <input class="form-control" placeholder="Atividade" ng-model="activity.activity.description" required="true"/>
+               <input class="form-control" placeholder="Descrição" ng-model="activity.activity.description"/>
                 <!--<div ng-messages="invitation.email.$error">-->
                   <!--<div ng-message="required">This is required.</div>-->
                 <!--</div>-->
@@ -29,8 +29,8 @@
             <md-input-container>
               <label>Milestone</label>
               <md-select ng-model="activity.activity.milestone">
-                <md-option ng-value=""> n tem</md-option>
-                <md-option ng-value="milestone" ng-selected="activity.activity.milestone ? milestone.id == activity.activity.milestone.id : null" ng-repeat="milestone in activity.projectMilestones">
+                <md-option ng-value="">Nenhum milestone</md-option>
+                <md-option ng-value="milestone" ng-selected="activity.activity.milestone ? milestone.id == activity.activity.milestone.id : null" ng-repeat="milestone in activity.project.milestones">
 
                   {{milestone.name}}
                 </md-option>
@@ -40,7 +40,7 @@
             <md-input-container>
               <label>Responsavel</label>
               <md-select ng-model="activity.activity.owner">
-                <md-option ng-value=""> n tem</md-option>
+                <md-option ng-value=""> Nenhum responsável</md-option>
                 <md-option ng-value="user" ng-selected="activity.activity.owner ? user.id == activity.activity.owner.id : null" ng-repeat="user in activity.users">
                   {{user.name}}
                 </md-option>

@@ -94,27 +94,41 @@
 
     vm.removeActivity = function (ev, project, activity, milestone) {
       var confirm = $mdDialog.confirm()
-        .title('Deseja remover essa atividade?')
+        .title('Excluir Atividade')
+        .content( "Você realmente deseja excluir a atividade "+ activity.name + "?")
         .targetEvent(ev)
         .ok('Remover')
         .cancel('Cancelar');
       $mdDialog.show(confirm).then(function() {
-        if(milestone){
-          milestone.activities.splice( milestone.activities.indexOf(activity), 1 );
-        } else {
-          project.activities.splice( project.activities.indexOf(activity), 1 );
-        }
+        $http.post ( $rootScope.server + "/removeActivity", activity.id )
+          .success( function ( data )  {
+            findProjectById( vm.project.id );
+
+          })
+          .error ( function (data ){
+            $log.debug ( data.message );
+          })
+
+
       });
     };
 
     vm.removeMilestone = function (ev, project, milestone) {
       var confirm = $mdDialog.confirm()
-        .title('Deseja remover esse milestone?')
+        .title('Excluir Milestone')
         .targetEvent(ev)
+        .content ('Você realmente deseja excluir o milestone '+ milestone.name+ '? A exclusão apagará todas as atividades associadas.')
         .ok('Remover')
         .cancel('Cancelar');
       $mdDialog.show(confirm).then(function() {
-        project.milestones.splice( project.milestones.indexOf(milestone), 1 );
+        $http.post ( $rootScope.server + "/removeMilestone", milestone.id )
+          .success( function ( data )  {
+            findProjectById( project.id );
+          })
+          .error ( function (data ){
+            $log.debug ( data.message );
+          })
+        
       });
     };
 
@@ -130,12 +144,28 @@
           locals: {project: project, activity: activity, milestones: milestones}
         })
         .then(function ( activity ) {
-          if ( activity ) {
-            findProjectById( vm.project.id );
-          }
+          findProjectById( vm.project.id );
           console.log ( activity );
         });
     };
+
+    vm.updateActivity = function ( activity ) {
+
+        if ( !activity.milestone || !activity.milestone.id ) {
+          activity.milestone = null;
+          activity.project = { id : vm.project.id, name : vm.project.name };
+        }
+
+        console.log ( activity );
+        $http.post ( $rootScope.server + "/updateActivity", activity )
+          .success( function ( data )  {
+            findProjectById( vm.project.id );
+            console.log("Update")
+          })
+          .error ( function (data ){
+            $log.debug ( data.message );
+          })
+      }
 
     vm.manageMembers = function (ev, project) {
       //var project = angular.copy(vm.project);
@@ -157,7 +187,6 @@
 
     vm.manageMilestone = function (ev, project, milestone) {
 
-
       $mdDialog.show({
           controller: MilestoneController,
           controllerAs: 'milestone',
@@ -168,7 +197,7 @@
           locals: {project: project, milestone: milestone}
         })
         .then(function (answer) {
-
+          findProjectById( vm.project.id );
         });
     };
 
@@ -278,10 +307,12 @@
 
       vm.newMilestone = milestone;
 
-      if (vm.newMilestone) {
-        vm.newMilestone.initialDate = new Date(vm.newMilestone.initialDate);
-        vm.newMilestone.finalDate = new Date(vm.newMilestone.finalDate);
+      if ( milestone && milestone.id ) {
+        milestone.initialDate = new Date(milestone.initialDate);
+        milestone.finalDate = new Date(milestone.finalDate);
+
       }
+
 
       vm.hide = function () {
         $mdDialog.hide();
@@ -290,17 +321,47 @@
         $mdDialog.cancel();
       };
 
-      vm.answer = function () {
-        $mdDialog.hide();
+      vm.closeOk = function ( milestone ) {
+    
+        if ( milestone ) {
 
-        $log.debug(project);
+          milestone.project = { id : project.id , name : project.name }
 
-        if(!vm.newMilestone.id){
-          project.milestones.push(vm.newMilestone);
+          if ( milestone.id ) {
+            // update
+            updateMilestone ( milestone );
+
+          } else {
+            // insert
+            insertMilestone ( milestone );
+          }
+
+        } else { 
+          console.log("Milestone null");
         }
-        //TODO Backend here
+
 
       };
+
+      function insertMilestone ( milestone ) {
+        $http.post ( $rootScope.server + "/insertMilestone", milestone )
+          .success( function ( data )  {
+            $mdDialog.hide ( data );
+          })
+          .error ( function (data ){
+            $log.debug ( data.message );
+          })
+      }
+
+      function updateMilestone ( milestone ) {
+        $http.post ( $rootScope.server + "/updateMilestone", milestone )
+          .success( function ( data )  {
+            $mdDialog.hide ( data );
+          })
+          .error ( function (data ){
+            $log.debug ( data.message );
+          })
+      }
     }
 
 

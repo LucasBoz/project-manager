@@ -45,46 +45,56 @@
 
     <div flex>
 
-      <md-list-item ng-repeat="activity in project.project.activities">
-        <md-checkbox ng-model="activity.status"></md-checkbox>
+      <md-list-item ng-repeat="activity in project.project.activities" ng-if="project.project.activities.length">
+        <md-checkbox ng-model="activity.status" ng-change="project.updateActivity( activity )"></md-checkbox>
         <p>{{activity.name }} - {{activity.owner.name}}</p>
         <md-button class="md-primary" ng-click="project.manageActivity($event, project.project, activity, project.milestones)">Editar
         </md-button>
         <md-button class="md-primary" ng-click="project.removeActivity($event, project.project, activity)">Remover
         </md-button>
-
       </md-list-item>
+
+      <div style="border: 1px solid black; height:60px;" layout layout-align="center center" ng-if="!project.project.activities.length">
+        <span> O Projeto não possui atividades sem milestone</span>
+      </div>
 
       <md-divider></md-divider>
 
       <h3> Milestones do Projeto</h3>
 
-      <div ng-repeat="milestone in project.project.milestones">
+      <div ng-repeat="milestone in project.project.milestones" ng-if="project.project.milestones.length" >
 
-        <md-subheader class="md-no-sticky">
+        <md-subheader class="md-no-sticky" >
           <div>
 
             <div layout="row" style="margin-bottom: 10px;">
-              <h4>
-                {{milestone.name}} ({{milestone.initialDate | date:'dd/MM/yyyy'}} - {{milestone.finalDate
-                |date:'dd/MM/yyyy'}})
-              </h4>
-              <div>
-                <md-button class="md-primary"  ng-click="project.manageMilestone($event,project.project, milestone )"> Editar</md-button>
-                <md-button class="md-primary" ng-click="project.removeMilestone($event,project.project, milestone )"> Remover</md-button>
+              <h2>
+                {{milestone.name}} 
+              </h2>
+              <div layout="row" style="margin-top: 5px; margin-left: 30px;">
+                <p> Data de Início </p>
+                <p style="font-weight: bold; margin-left: 15px">{{milestone.initialDate | date:'dd/MM/yyyy'}}</p>
+                <p style="margin-left: 30px;"> Data de Término </p>
+                <p style="font-weight: bold; margin-left: 15px">{{milestone.finalDate | date:'dd/MM/yyyy'}}</p>
               </div>
+              <div flex> </div>
+              <md-button class="md-primary"  ng-click="project.manageMilestone($event,project.project, milestone )"> Editar</md-button>
+              <md-button class="md-primary" ng-click="project.removeMilestone($event,project.project, milestone )"> Remover</md-button>
             </div>
-            <div>
-              {{milestone.notes}}
+            <div ng-if="milestone.notes">
+              <p> Observação do Milestone</p>
+              <p >
+                {{milestone.notes}}
+              </p>
             </div>
 
           </div>
 
         </md-subheader>
 
-        <md-list-item ng-repeat="activity in milestone.activities">
+        <md-list-item ng-repeat="activity in milestone.activities | orderBy: 'name'" ng-if="milestone.activities.length">
 
-          <md-checkbox ng-model="activity.status"></md-checkbox>
+          <md-checkbox ng-model="activity.status" ng-change="project.updateActivity( activity )"></md-checkbox>
           <p>{{activity.name }} - {{activity.owner.name}}</p>
 
           <md-button class="md-primary" ng-click="project.manageActivity($event, project.project, activity, milestone)">
@@ -95,10 +105,17 @@
           </md-button>
 
         </md-list-item>
+        <div style="padding: 0px 20px 0px 20px;" >
+          <div style="border: 1px solid black; height:60px;" layout layout-align="center center" ng-if="!milestone.activities.length">
+            <span> O Milestone {{milestone.name}} não possui atividades</span>
+          </div>
+        </div>
 
         <md-divider></md-divider>
       </div>
-
+      <div style="border: 1px solid black; height:60px;" layout layout-align="center center" ng-if="!project.project.milestones.length">
+        <span> O Projeto não possui milestones</span>
+      </div>
     </div>
 
   </div>

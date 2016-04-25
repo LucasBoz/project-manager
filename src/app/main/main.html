@@ -1,12 +1,12 @@
 <md-content layout="column" layout-fill flex>
 
-  <div layout="row">
-      <md-input-container>
+  <div layout="row" style="padding: 20px 40px 0px 40px;" >
+      <md-input-container flex>
         <label>Filtro</label>
        <input placeholder="Filtre projetos" name="filter" ng-model="main.filter"/>
     </md-input-container>
-
-    <md-button style="width: 200px;" ng-click="main.newProjectModal($event, main.projects)">Novo projeto</md-button>
+    <div flex> </div>
+    <md-button class="md-primary" style="width: 150px; max-height: 40px; height: 40px;" ng-click="main.newProjectModal($event, main.projects)">Novo projeto</md-button>
   </div>
 
 
