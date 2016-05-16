@@ -35,7 +35,6 @@
     </div>
 
 
-
   </div>
   <div layout="row">
     <p> Data de Início </p>
@@ -66,8 +65,8 @@
 
     <div flex>
 
-      <md-list-item ng-repeat="activity in project.project.activities" ng-if="project.project.activities.length">
-        <!--<md-checkbox ng-model="activity.status" ng-change="project.updateActivity( activity )"></md-checkbox>-->
+      <div ng-repeat="activity in project.project.activities" ng-if="project.project.activities.length" layout="row">
+        <md-checkbox ng-model="activity.status" ng-change="project.updateActivity( activity )"></md-checkbox>
         <div layout="row">
           <p>{{activity.name }}</p>
 
@@ -91,7 +90,7 @@
         </md-button>
         <md-button class="md-primary" ng-click="project.removeActivity($event, project.project, activity)">Remover
         </md-button>
-      </md-list-item>
+      </div>
 
       <div style="border: 1px solid black; height:60px;" layout layout-align="center center" ng-if="!project.project.activities.length">
         <span> O Projeto não possui atividades sem milestone</span>
@@ -132,10 +131,26 @@
 
         </md-subheader>
 
-        <md-list-item ng-repeat="activity in milestone.activities | orderBy: 'name'" ng-if="milestone.activities.length">
+        <div ng-repeat="activity in milestone.activities | orderBy: 'name'" ng-if="milestone.activities.length" layout="row">
 
           <md-checkbox ng-model="activity.status" ng-change="project.updateActivity( activity )"></md-checkbox>
-          <p>{{activity.name }} - {{activity.owner.name}}</p>
+
+          <div layout="row">
+            <p>{{activity.name }}</p>
+
+            <md-input-container>
+              <label>Responsável</label>
+              <md-select ng-model="activity.owner"
+                         ng-change="project.updateActivity( activity )">
+                <md-option ng-value="user"
+                           ng-selected="activity.owner ? user.id == activity.owner.id : null"
+                           ng-repeat="user in project.users">
+                  {{user.name}}
+                </md-option>
+              </md-select>
+            </md-input-container>
+
+          </div>
 
           <md-button class="md-primary" ng-click="project.manageActivity($event, project.project, activity, milestone)">
             Editar
@@ -144,7 +159,7 @@
             Remover
           </md-button>
 
-        </md-list-item>
+        </div>
         <div style="padding: 0px 20px 0px 20px;" >
           <div style="border: 1px solid black; height:60px;" layout layout-align="center center" ng-if="!milestone.activities.length">
             <span> O Milestone {{milestone.name}} não possui atividades</span>
