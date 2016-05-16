@@ -6,14 +6,14 @@
         <span flex></span>
       </div>
     </md-toolbar>
-    <md-dialog-content style="max-width:800px;max-height:810px; padding: 20px">
-      <form name="milestoneForm">
+    <md-dialog-content layout="row" style="padding: 20px">
+      <form name="milestoneForm"  flex="50">
 
         <div class="form-group" layout="column">
 
           <md-input-container>
             <label>Nome do milestone</label>
-            <input class="form-control" autocomplete="off" placeholder="Milestone" ng-model="milestone.newMilestone.name" required="true"/>
+            <input class="form-control" autocomplete="off" placeholder="Milestone" ng-model="milestoneController.milestone.name" required="true"/>
             <div ng-messages="invitation.email.$error">
               <div ng-message="required">This is required.</div>
             </div>
@@ -21,26 +21,46 @@
 
           <md-input-container>
             <label>Descrição</label>
-            <input class="form-control" autocomplete="off" placeholder="Descrição" ng-model="milestone.newMilestone.notes"/>
+            <input class="form-control" autocomplete="off" placeholder="Descrição" ng-model="milestoneController.milestone.notes"/>
           </md-input-container>
 
           <div layout="row">
-            <md-datepicker ng-model="milestone.newMilestone.initialDate" md-placeholder="Início"></md-datepicker>
-            <md-datepicker ng-model="milestone.newMilestone.finalDate" md-placeholder="Término"></md-datepicker>
+            <md-datepicker ng-model="milestoneController.milestone.initialDate" md-placeholder="Início"></md-datepicker>
+            <md-datepicker ng-model="milestoneController.milestone.finalDate" md-placeholder="Término"></md-datepicker>
           </div>
 
         </div>
 
       </form>
+      <div flex="50" style="border: solid #99a599 1px; padding: 20px">
+        <h3>Associar Atividades</h3>
+
+        <div ng-repeat="activity in milestoneController.project.activities" layout="row">
+
+          <md-checkbox ng-model="activity.selected"></md-checkbox>
+          <p>{{ activity.name }}</p>
+
+        </div>
+        <div ng-repeat="milestone in milestoneController.project.milestones">
+
+          <div ng-repeat="activity in milestone.activities" layout="row" ng-if="milestone.name != milestoneController.milestone.name">
+
+            <md-checkbox ng-model="activity.selected"></md-checkbox>
+            <p>{{ activity.name }}</p>
+
+          </div>
+
+        </div>
+      </div>
     </md-dialog-content>
     <md-dialog-actions layout="row">
 
       <span flex></span>
-      <md-button ng-click="milestone.cancel()" >
+      <md-button ng-click="milestoneController.cancel()" >
         Cancelar
       </md-button>
-      <md-button ng-click="milestone.closeOk(milestone.newMilestone)" style="margin-right:20px;" >
-        OK
+      <md-button ng-click="milestoneController.closeOk(milestoneController.milestone)" style="margin-right:20px;" >
+        OK {{milestoneController.milestone}} 123
       </md-button>
     </md-dialog-actions>
   </form>
