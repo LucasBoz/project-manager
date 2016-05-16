@@ -1,25 +1,25 @@
-<md-dialog aria-label="Mango (Fruit)">
+<md-dialog aria-label="manage members">
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>membros de project {{members.project}}</h2>
+        <h2>Membros do projeto</h2>
         <span flex></span>
-        <!--<md-button class="md-icon-button" ng-click="cancel()">-->
-          <!--<md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>-->
-        <!--</md-button>-->
       </div>
     </md-toolbar>
-    <md-dialog-content style="max-width:800px;max-height:810px; ">
-      <h1>MANAGER MEMBERS</h1>
+    <md-dialog-content style="max-width:800px;max-height:810px;min-width:500px;">
+      {{members | json}}
+      <div ng-repeat="user in members.users">
+        {{user.name}}
+      </div>
     </md-dialog-content>
     <md-dialog-actions layout="row">
 
       <span flex></span>
       <md-button ng-click="members.answer('not useful')" >
-        Not Useful
+        Cancelar
       </md-button>
       <md-button ng-click="members.answer('useful')" style="margin-right:20px;" >
-        Useful
+        Salvar
       </md-button>
     </md-dialog-actions>
   </form>

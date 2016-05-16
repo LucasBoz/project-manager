@@ -12,7 +12,7 @@
 
     findProjectById( $routeParams.id );
     findMilestoneByProjectId ( $routeParams.id );
-
+    loadUsers();
     vm.status = [
       {
         name:'ABERTO',
@@ -54,6 +54,17 @@
           $log.debug (data.message);
         })
     }
+
+    function loadUsers () {
+      $http.get( $rootScope.server + "/listAllUsers")
+        .success( function ( data )  {
+          vm.users = data;
+        })
+        .error ( function (data ){
+          $log.debug ( data.message );
+        })
+    }
+
 
     function findProjectById ( id ) {
       $http.get( $rootScope.server + "/findFullProjectById", { params : { 'id' : id } } )
@@ -159,7 +170,7 @@
         console.log ( activity );
         $http.post ( $rootScope.server + "/updateActivity", activity )
           .success( function ( data )  {
-            findProjectById( vm.project.id );
+            // findProjectById( vm.project.id );
             console.log("Update")
           })
           .error ( function (data ){
@@ -205,12 +216,14 @@
     //------------
     //  DIALOG CONTROLLER
     //------------
-    function MembersController() {
+    function MembersController(project) {
       $log.debug('MembersController');
 
       var vm = this;
 
       vm.project = project;
+
+      vm.users = project.users;
 
       vm.modal = "TEST";
 
@@ -380,7 +393,7 @@
             $http.post ( $rootScope.server + "/updateActivity", activity )
               .success( function ( data )  {
 
-                findProjectById( milestone.project.id );
+                findProjectById( vm.project.id );
 
               })
               .error ( function (data ){
@@ -422,7 +435,7 @@
 
             saveActivities(data);
 
-            findProjectById( milestone.project.id );
+            findProjectById( data.project.id );
           })
           .error ( function (data ){
             $log.debug ( data.message );

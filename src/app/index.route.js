@@ -22,10 +22,10 @@
         controller: 'ProjectController',
         controllerAs: 'project'
       })
-      .when('/user', {
-        templateUrl: 'app/user/user.html',
+      .when('/users', {
+        templateUrl: 'app/user/users.html',
         controller: 'UserController',
-        controllerAs: 'userzz'
+        controllerAs: 'userController'
       })
       .otherwise({
         redirectTo: '/'

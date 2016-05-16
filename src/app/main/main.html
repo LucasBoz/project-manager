@@ -27,8 +27,8 @@
 
           <!--ng-click="main.openProject(project.id)"-->
             <md-content style="padding:10px; height: 240px; width: 270px" ng-click="main.openProject(project.id)" class="md-whiteframe-6dp" >
-                
-                <h3 title="{{project.name}}" style="white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis;">{{project.name}}</h2>
+
+                <h2 title="{{project.name}}" style="white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis;">{{project.name}}</h2>
 
                 <md-select ng-model="project.status" ng-change="main.updateProjectStatus( project )" style="margin: 0, width: 20px" ng-click="$event.stopPropagation();">
                   <md-option ng-value="status.name"  ng-repeat="status in main.status">
@@ -39,10 +39,8 @@
                     </div>
                   </md-option>
                 </md-select>
-            
-                  
 
-             
+
                 <md-divider></md-divider>
                 <p>{{project.projectManager.name}}</p>
                 <p>{{project.initialDate | date:'dd/MM/yyyy'}} - {{project.finalDate | date:'dd/MM/yyyy' }}</p>

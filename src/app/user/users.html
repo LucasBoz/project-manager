@@ -1,0 +1,49 @@
+<md-content layout="column" layout-fill flex style="padding: 25px 20px 20px 20px">
+
+  <div layout="row">
+
+    <h2> Usuários </h2>
+
+    <div flex></div>
+
+
+  </div>
+
+  <div>
+    <md-input-container>
+      <label>Novo usuário</label>
+      <input class="form-control" placeholder="Novo usuário" ng-model="userController.newUser.name" required="true"/>
+    </md-input-container>
+    <md-button class="md-raised md-primary" ng-click="userController.insertUser( userController.newUser )">
+      Salvar
+    </md-button>
+
+  </div>
+
+
+  <md-divider></md-divider>
+
+  <div layout="row">
+
+    <div flex>
+
+      <md-list-item ng-repeat="user in userController.users" ng-if="userController.users.length">
+
+        <p>{{user.name}}</p>
+
+        <md-button class="md-primary" ng-click="">Editar</md-button>
+        <md-button class="md-primary" ng-click="userController.removeUser(user)">Remover</md-button>
+
+      </md-list-item>
+
+      <div style="border: 1px solid black; height:60px;" layout layout-align="center center"
+           ng-if="!userController.users.length">
+        <span> O Sistema não possui usuários</span>
+      </div>
+
+    </div>
+
+  </div>
+
+
+</md-content>

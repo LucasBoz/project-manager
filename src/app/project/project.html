@@ -4,7 +4,9 @@
 
     <h2> {{project.project.name}} </h2>
 
-    <md-select aria-label="status" ng-model="project.project.status" ng-change="project.updateProjectStatus( project.project )" style="margin: 0 20px 0 30px">
+    <md-select aria-label="status"
+               ng-model="project.project.status"
+               ng-change="project.updateProjectStatus( project.project )" style="margin: 0 20px 0 30px">
       <md-option ng-value="status.name" ng-repeat="status in project.status track by $index">
         <div layout="row">
           <div ng-style="{'background-color': status.color}"
@@ -17,16 +19,18 @@
 
     <div layout="row">
       <p> Gerente do Projeto: </p>
-      <p style="font-weight: bold; margin-left: 15px">{{project.project.projectManager.name}} </p>
 
-      <!--<md-input-container>-->
-        <!--<label>Gerente de projeto</label>-->
-        <!--<md-select ng-model="project.newProject.projectManager">-->
-          <!--<md-option ng-repeat="projectManager in project.projectManagers" ng-value="projectManager">-->
-            <!--{{projectManager.name}}-->
-          <!--</md-option>-->
-        <!--</md-select>-->
-      <!--</md-input-container>-->
+
+      <md-input-container>
+        <md-select ng-model="project.project.projectManager"
+                   ng-change="project.updateProjectStatus( project.project )">
+          <md-option ng-value="user"
+                     ng-selected="project.project.projectManager ? user.id == project.project.projectManager.id : null"
+                     ng-repeat="user in project.users">
+            {{user.name}}
+          </md-option>
+        </md-select>
+      </md-input-container>
 
     </div>
 
@@ -40,6 +44,9 @@
     <p style="font-weight: bold; margin-left: 15px">{{project.project.finalDate | date:'dd/MM/yyyy'}}</p>
 
     <div flex> </div>
+    <md-button class="md-raised md-primary" ng-click="project.manageMembers($event, project.project)">
+      Gerenciar usuários
+    </md-button>
     <md-button class="md-raised md-primary" ng-click="project.manageActivity($event, project.project, null, project.milestones)">
       Criar atividade
     </md-button>
@@ -60,8 +67,26 @@
     <div flex>
 
       <md-list-item ng-repeat="activity in project.project.activities" ng-if="project.project.activities.length">
-        <md-checkbox ng-model="activity.status" ng-change="project.updateActivity( activity )"></md-checkbox>
-        <p>{{activity.name }} - {{activity.owner.name}}</p>
+        <!--<md-checkbox ng-model="activity.status" ng-change="project.updateActivity( activity )"></md-checkbox>-->
+        <div layout="row">
+          <p>{{activity.name }}</p>
+
+          <md-input-container>
+            <label>Responsável</label>
+            <md-select ng-model="activity.owner"
+                       ng-change="project.updateActivity( activity )">
+              <md-option ng-value="user"
+                         ng-selected="activity.owner ? user.id == activity.owner.id : null"
+                         ng-repeat="user in project.users">
+                {{user.name}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+
+        </div>
+
+
+
         <md-button class="md-primary" ng-click="project.manageActivity($event, project.project, activity, project.milestones)">Editar
         </md-button>
         <md-button class="md-primary" ng-click="project.removeActivity($event, project.project, activity)">Remover

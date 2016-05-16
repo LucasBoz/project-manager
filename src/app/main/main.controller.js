@@ -67,13 +67,17 @@
       $location.path('project/' + projectId);
       $log.debug("project " + projectId);
     };
-    
+
 
     vm.changeToListProject = function(){
       $location.path('/');
     };
 
-    
+    vm.changeToListUsers = function(){
+      $location.path('/users');
+    };
+
+
 
 
     vm.updateProjectStatus = function ( project ) {
@@ -130,17 +134,17 @@
         $http.post( $rootScope.server + '/insertProject',project )
           .success(function( data )
           {
-            
+
             $mdDialog.hide( data );
           }).error(function(data){
             //TODO toast. :)
             if ( data.message && data.message.indexOf("org.hibernate.exception.ConstraintViolationException" > -1 )) {
-              $log.debug( "TOAST COM A MENSAGEM DE NOME INVALIDO QUE NAO E UNICO TODODODODODODODODODODODODODOD" );  
+              $log.debug( "TOAST COM A MENSAGEM DE NOME INVALIDO QUE NAO E UNICO TODODODODODODODODODODODODODOD" );
             } else {
-              $log.debug( data.message );  
+              $log.debug( data.message );
             }
-            
-            
+
+
           });
       }
 
