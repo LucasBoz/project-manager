@@ -7,10 +7,36 @@
       </div>
     </md-toolbar>
     <md-dialog-content style="max-width:800px;max-height:810px;min-width:500px;">
-      {{members | json}}
-      <div ng-repeat="user in members.users">
-        {{user.name}}
-      </div>
+
+
+      <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="Gerenciar membros">
+          <md-content class="md-padding">
+            <div ng-repeat="user in members.members">
+              <div layout="row">
+
+                <p>{{user.name}}</p>
+                <div flex></div>
+                <md-button class="md-primary" ng-click="milestone.disabledMember()">Desassociar</md-button>
+
+              </div>
+            </div>
+          </md-content>
+        </md-tab>
+        <md-tab label="Adicionar membros">
+          <md-content class="md-padding">
+            <div ng-repeat="user in members.users">
+              <div layout="row">
+                <md-checkbox ng-model="user.selected">
+                  <p>{{user.name}}</p>
+                </md-checkbox>
+
+              </div>
+            </div>
+           </md-content>
+        </md-tab>
+      </md-tabs>
+
     </md-dialog-content>
     <md-dialog-actions layout="row">
 
@@ -18,8 +44,8 @@
       <md-button ng-click="members.answer('not useful')" >
         Cancelar
       </md-button>
-      <md-button ng-click="members.answer('useful')" style="margin-right:20px;" >
-        Salvar
+      <md-button ng-click="members.answer()" style="margin-right:20px;" >
+        Concluir
       </md-button>
     </md-dialog-actions>
   </form>

@@ -8,6 +8,8 @@
   /** @ngInject */
   function dataService($http, $httpParamSerializer) {
 
+    var server = "http://localhost:8080";
+
     //var endPoint = '/api/';
     //var endPoint = 'http://192.168.20.53:4000/';
     var endPoint = 'http://localhost:3000/app/projects.json';
@@ -15,6 +17,34 @@
 
 
       return {
+
+        saveProject : function (project) {
+          if(project.id){
+
+
+            return $http({
+              method: 'POST',
+              url: server + "/updateProject",
+              // headers: { 'Content-Type' : 'application/x-www-form-urlencoded' },
+              data: $httpParamSerializer(project)
+            });
+
+            // http.post($rootScope.server + "/updateProject", project)
+            //   .success(function (data) {
+            //     console.log("salvou")
+            //   })
+            //   .error(function (data) {
+            //     console.log("deu pau")
+            //   })
+
+          } else {
+
+
+          }
+        },
+
+
+        // VVVVVVV BASURA
 
         get : function(id, table, page) {
           if(id){
@@ -33,21 +63,6 @@
 
         listAllProjects : function () {
           return $http.get('http://localhost:8080/listAllProjects');
-        },
-
-        findProject : function(id, table, page) {
-          if(id){
-            return $http.get('http://localhost:3000/app/project.json');
-          }
-          return $http({
-              url: 'http://localhost:3000/app/project.json',
-              method: 'GET',
-              params: {
-                page: page,
-                limit: 10
-              }
-            }
-          );
         },
 
         find : function(table, args) {

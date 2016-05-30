@@ -14,11 +14,12 @@
     var vm = this;
 
     $rootScope.server = "http://localhost:8080";
+
     vm.status = [
       {
         name:'ABERTO',
         color:'green',
-        label: "Aberto",
+        label: "Aberto"
       },
       {
         name:'EM_EXECUCAO',

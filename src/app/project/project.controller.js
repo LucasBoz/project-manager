@@ -167,6 +167,7 @@
           activity.project = { id : vm.project.id, name : vm.project.name };
         }
 
+
         console.log ( activity );
         $http.post ( $rootScope.server + "/updateActivity", activity )
           .success( function ( data )  {
@@ -223,9 +224,36 @@
 
       vm.project = project;
 
-      vm.users = project.users;
+      vm.members = project.members;
 
-      vm.modal = "TEST";
+      if(!project.members){
+        project.members=[];
+      }
+
+      listAllUsers();
+
+      function listAllUsers() {
+        $http.get($rootScope.server + "/listAllUsers")
+          .success(function (data) {
+            vm.users = data;
+          })
+          .error(function (data) {
+            $log.debug(data.message);
+          })
+      }
+
+      vm.disabledMember = function (member) {
+        vm.members.splice( vm.members.indexOf(member), 1);
+
+        dataService.saveProject(vm.project)
+          .success(function(data){
+            vm.project = data;
+          }).error(function(message){
+          $log.debug(message);
+        });
+
+
+      };
 
       vm.hide = function () {
         $mdDialog.hide();
@@ -233,8 +261,29 @@
       vm.cancel = function () {
         $mdDialog.cancel();
       };
-      vm.answer = function (answer) {
-        $mdDialog.hide(answer);
+      vm.answer = function () {
+        $mdDialog.hide();
+
+        angular.forEach(vm.users, function(user) {
+          if(user.selected){
+            project.members.push(user);
+          }
+        });
+
+        dataService.saveProject(vm.project)
+          .success(function(data){
+            vm.project = data;
+          }).error(function(message){
+          $log.debug(message);
+        });
+
+        // $http.post($rootScope.server + "/updateProject", project)
+        //   .success(function (data) {
+        //     console.log("salvou")
+        //   })
+        //   .error(function (data) {
+        //     console.log("deu pau")
+        //   })
 
       };
     }
@@ -315,7 +364,6 @@
     }
 
     function MilestoneController(project, milestone) {
-      $log.debug('MembersController');
 
       var vm = this;
 

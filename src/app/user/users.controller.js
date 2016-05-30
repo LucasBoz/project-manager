@@ -10,7 +10,7 @@
 
     var vm = this;
     listAllUsers();
-
+    bundles();
     function listAllUsers() {
       $http.get($rootScope.server + "/listAllUsers")
         .success(function (data) {
@@ -20,6 +20,19 @@
           $log.debug(data.message);
         })
     }
+
+
+    function bundles() {
+      $http.get($rootScope.server + "/bundles")
+        .success(function (data) {
+          vm.users = data;
+        })
+        .error(function (data) {
+          $log.debug(data.message);
+        })
+    }
+
+
 
     vm.insertUser = function (newUser) {
 

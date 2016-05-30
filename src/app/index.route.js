@@ -27,6 +27,11 @@
         controller: 'UserController',
         controllerAs: 'userController'
       })
+      .when('/authentication', {
+        templateUrl: 'app/authentication/authentication.html',
+        controller: 'AuthenticationController',
+        controllerAs: 'authenticationController'
+      })
       .otherwise({
         redirectTo: '/'
       });
