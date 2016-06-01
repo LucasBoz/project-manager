@@ -26,7 +26,7 @@
                    ng-change="project.updateProjectStatus( project.project )">
           <md-option ng-value="user"
                      ng-selected="project.project.projectManager ? user.id == project.project.projectManager.id : null"
-                     ng-repeat="user in project.users">
+                     ng-repeat="user in project.project.members">
             {{user.name}}
           </md-option>
         </md-select>
@@ -76,7 +76,7 @@
                        ng-change="project.updateActivity( activity )">
               <md-option ng-value="user"
                          ng-selected="activity.owner ? user.id == activity.owner.id : null"
-                         ng-repeat="user in project.users">
+                         ng-repeat="user in project.project.members">
                 {{user.name}}
               </md-option>
             </md-select>
@@ -85,10 +85,14 @@
         </div>
 
 
-
-        <md-button class="md-primary" ng-click="project.manageActivity($event, project.project, activity, project.milestones)">Editar
+        <md-button class="md-primary" ng-click="project.manageActivity($event, project.project, activity, project.milestones)">
+          Editar
         </md-button>
-        <md-button class="md-primary" ng-click="project.removeActivity($event, project.project, activity)">Remover
+        <md-button class="md-primary" ng-click="project.removeActivity($event, project.project, activity)">
+          Remover
+        </md-button>
+        <md-button class="md-primary" ng-click="project.showLog(activity)">
+          Visualizar log
         </md-button>
       </div>
 
@@ -144,7 +148,7 @@
                          ng-change="project.updateActivity( activity )">
                 <md-option ng-value="user"
                            ng-selected="activity.owner ? user.id == activity.owner.id : null"
-                           ng-repeat="user in project.users">
+                           ng-repeat="user in project.project.members">
                   {{user.name}}
                 </md-option>
               </md-select>
@@ -173,7 +177,26 @@
       </div>
     </div>
 
+
+    <div ng-if="project.log" flex="30" style="background: #0300ff;">
+      <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="Comentários">
+          <md-content class="md-padding">
+            <div ng-repeat="annotation in project.activityInfo.annotations">
+              <div layout="row">
+                <p>{{annotation.note}}</p>
+                <div flex></div>
+                <md-button class="md-primary" ng-click="members.disabledMember(user)">Desassociar</md-button>
+              </div>
+            </div>
+          </md-content>
+        </md-tab>
+      </md-tabs>
+
+    </div>
+
   </div>
+
 
 
 </md-content>

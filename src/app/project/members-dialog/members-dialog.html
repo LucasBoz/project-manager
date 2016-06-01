@@ -17,15 +17,16 @@
 
                 <p>{{user.name}}</p>
                 <div flex></div>
-                <md-button class="md-primary" ng-click="milestone.disabledMember()">Desassociar</md-button>
+                <md-button class="md-primary" ng-click="members.disabledMember(user)">Desassociar</md-button>
 
               </div>
             </div>
           </md-content>
         </md-tab>
+
         <md-tab label="Adicionar membros">
           <md-content class="md-padding">
-            <div ng-repeat="user in members.users">
+            <div ng-repeat="user in members.users ">
               <div layout="row">
                 <md-checkbox ng-model="user.selected">
                   <p>{{user.name}}</p>
