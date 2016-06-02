@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -17,28 +17,28 @@
 
     vm.status = [
       {
-        name:'ABERTO',
-        color:'green',
+        name: 'ABERTO',
+        color: 'green',
         label: "Aberto"
       },
       {
-        name:'EM_EXECUCAO',
-        color:'yellow',
+        name: 'EM_EXECUCAO',
+        color: 'yellow',
         label: "Em execução"
       },
       {
-        name:'PARADO',
-        color:'orange',
+        name: 'PARADO',
+        color: 'orange',
         label: "Parado"
       },
       {
-        name:'CONCLUIDO',
-        color:'blue',
+        name: 'CONCLUIDO',
+        color: 'blue',
         label: "Concluido"
       },
       {
-        name:'CANCELADO',
-        color:'red',
+        name: 'CANCELADO',
+        color: 'red',
         label: "Cancelado"
       }
     ];
@@ -50,112 +50,115 @@
     //   $log.debug(message);
     // });
     dataService.listAllProjects()
-      .success(function(data){
+      .success(function (data) {
         vm.projects = data;
-      }).error(function(message){
-        $log.debug(message);
-      });
+      }).error(function (message) {
+      $log.debug(message);
+    });
 
     //vm.projects = Project.all();
 
-    vm.openSidenav = function(){
+    vm.openSidenav = function () {
       $log.debug("OPEN SIDENAVEE");
       $mdSidenav('left')
         .toggle();
     };
 
-    vm.openProject = function(projectId){
+    vm.openProject = function (projectId) {
       $location.path('project/' + projectId);
       $log.debug("project " + projectId);
     };
 
 
-    vm.changeToListProject = function(){
+    vm.changeToListProject = function () {
       $location.path('/');
     };
 
-    vm.changeToListUsers = function(){
+    vm.changeToListUsers = function () {
       $location.path('/users');
     };
 
 
-
-
-    vm.updateProjectStatus = function ( project ) {
+    vm.updateProjectStatus = function (project) {
       console.log("maoe");
-      $http.post( $rootScope.server + "/updateProject", project )
-        .success( function ( data )  {
+      $http.post($rootScope.server + "/updateProject", project)
+        .success(function (data) {
           console.log("salvou")
         })
-        .error ( function (data ){
+        .error(function (data) {
           console.log("deu pau")
         })
     }
 
-    vm.newProjectModal = function(ev, projects){
+    vm.newProjectModal = function (ev, projects) {
 
       $mdDialog.show({
           controller: ProjectController,
-          controllerAs : 'project',
+          controllerAs: 'project',
           templateUrl: 'app/main/project-dialog/project-dialog.html',
           //parent: angular.element(document.body),
           targetEvent: ev,
-          clickOutsideToClose:true,
-          locals: { projects : projects}
+          clickOutsideToClose: true,
+          locals: {projects: projects}
         })
-        .then(function( project ) {
+        .then(function (project) {
           console.log("hur dur")
-          vm.projects.push ( project );
+          vm.projects.push(project);
 
-          }, function() {
-            vm.status = 'You cancelled the dialog.';
-          });
+        }, function () {
+          vm.status = 'You cancelled the dialog.';
+        });
     };
 
 
-    function ProjectController(projects, $rootScope){
+    function ProjectController(projects, $rootScope) {
       $log.debug('MembersController');
 
       var vm = this;
       loadProjectManagers();
 
-      vm.hide = function() {
+      vm.hide = function () {
         $mdDialog.hide();
       };
 
-      vm.closeOk = function ( project ) {
-        insertProject( project );
-      }
+      vm.closeOk = function (project) {
+        if ( !project.members ) {
+          project.members = [];
+          if(!project.members.length){
+            project.members.push(project.projectManager);
+          }
+        }
+        insertProject(project);
+      };
 
-      vm.cancel = function() {
+      vm.cancel = function () {
         $mdDialog.cancel();
       };
 
-      function insertProject ( project ) {
-        $http.post( $rootScope.server + '/insertProject',project )
-          .success(function( data )
-          {
+      function insertProject(project) {
+        $http.post($rootScope.server + '/insertProject', project)
+          .success(function (data) {
 
-            $mdDialog.hide( data );
-          }).error(function(data){
-            //TODO toast. :)
-            if ( data.message && data.message.indexOf("org.hibernate.exception.ConstraintViolationException" > -1 )) {
-              $log.debug( "TOAST COM A MENSAGEM DE NOME INVALIDO QUE NAO E UNICO TODODODODODODODODODODODODODOD" );
-            } else {
-              $log.debug( data.message );
-            }
+            $mdDialog.hide(data);
+          }).error(function (data) {
+          //TODO toast. :)
+          if (data.message && data.message.indexOf("org.hibernate.exception.ConstraintViolationException" > -1)) {
+            $log.debug("TOAST COM A MENSAGEM DE NOME INVALIDO QUE NAO E UNICO TODODODODODODODODODODODODODOD");
+          } else {
+            $log.debug(data.message);
+          }
 
 
-          });
+        });
       }
 
-      function loadProjectManagers () {
-        $http.get( $rootScope.server + "/listAllUsers")
-          .success( function ( data )  {
+      function loadProjectManagers() {
+        $http.get($rootScope.server + "/listAllUsers")
+          .success(function (data) {
             vm.projectManagers = data;
           })
-          .error ( function (data ){
-            $log.debug ( data.message );
+          .error(function (data) {
+            $log.debug(data.message);
           })
       }
     }
