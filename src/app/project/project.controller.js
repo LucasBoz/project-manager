@@ -90,14 +90,32 @@
     };
 
 
-    vm.showLog = function (activity) {
+    vm.insertAnnotation = function (newAnnotation) {
 
-      $http.get($rootScope.server + "/findActivityById")
+      $http.get($rootScope.server + "/insertAnnotation", {params: {'annotation': newAnnotation}})
         .success(function (data) {
 
-          vm.activityInfo = data;
+          vm.annotations.push(data);
 
-          vm.log = true;
+        })
+        .error(function (data) {
+          $log.debug(data.message);
+        })
+
+
+    };
+
+
+    vm.showInfo = function (activityId) {
+
+       activityId = 1;
+
+      $http.get($rootScope.server + "/listAnnotationByActivityId", {params: {'id': activityId}})
+        .success(function (data) {
+
+          vm.annotations = data;
+
+          vm.info = true;
 
         })
         .error(function (data) {
@@ -335,6 +353,7 @@
       loadUsers();
       vm.activity = activity;
       vm.project = project;
+      vm.members = project.members;
       vm.projectMilestones = milestones;
 
       vm.hide = function () {
@@ -348,8 +367,7 @@
 
           if (activity.milestone && activity.milestone.id) {
             activity.project = null;
-            var milestone = {id: activity.milestone.id, name: activity.milestone.name}
-            activity.milestone = milestone;
+            activity.milestone = {id: activity.milestone.id, name: activity.milestone.name};
           } else {
             activity.project = {id: project.id, name: project.name};
             activity.milestone = null;

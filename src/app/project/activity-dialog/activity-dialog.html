@@ -41,7 +41,9 @@
               <label>Responsavel</label>
               <md-select ng-model="activity.activity.owner">
                 <md-option ng-value=""> Nenhum responsável</md-option>
-                <md-option ng-value="user" ng-selected="activity.activity.owner ? user.id == activity.activity.owner.id : null" ng-repeat="user in activity.users">
+                <md-option ng-value="user"
+                           ng-repeat="user in activity.members"
+                           ng-selected="activity.activity.owner ? user.id == activity.activity.owner.id : null" >
                   {{user.name}}
                 </md-option>
               </md-select>

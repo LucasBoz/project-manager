@@ -91,7 +91,7 @@
         <md-button class="md-primary" ng-click="project.removeActivity($event, project.project, activity)">
           Remover
         </md-button>
-        <md-button class="md-primary" ng-click="project.showLog(activity)">
+        <md-button class="md-primary" ng-click="project.showInfo(activity.id)">
           Visualizar log
         </md-button>
       </div>
@@ -178,15 +178,25 @@
     </div>
 
 
-    <div ng-if="project.log" flex="30" style="background: #0300ff;">
+    <div ng-if="project.info" flex="30" style="background: #4cd8ff;">
       <md-tabs md-dynamic-height md-border-bottom>
         <md-tab label="Comentários">
+
+          <div>
+            <md-input-container>
+              <label>Novo comentário</label>
+              <input class="form-control" placeholder="Novo comentário" ng-model="project.newAnnotation.note" required="true"/>
+            </md-input-container>
+            <md-button class="md-raised md-primary" ng-click="project.insertAnnotation( project.newAnnotation)">
+              Salvar
+            </md-button>
+
+          </div>
+
           <md-content class="md-padding">
-            <div ng-repeat="annotation in project.activityInfo.annotations">
+            <div ng-repeat="annotation in project.annotations">
               <div layout="row">
                 <p>{{annotation.note}}</p>
-                <div flex></div>
-                <md-button class="md-primary" ng-click="members.disabledMember(user)">Desassociar</md-button>
               </div>
             </div>
           </md-content>
