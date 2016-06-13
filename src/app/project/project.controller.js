@@ -41,10 +41,16 @@
       }
     ];
 
+    vm.info = false;
+
     vm.milestones = [];
 
     vm.userLogged = {
       id : 1
+    };
+
+    vm.newAnnotation = {
+      note : ""
     };
 
     vm.project = {activities: []};
@@ -96,27 +102,32 @@
 
     vm.insertAnnotation = function (annotation) {
 
+      if(annotation.note){
+        annotation = {
+          note : annotation.note,
+          activity : { id : vm.activityId},
+          createdBy : {id : vm.userLogged.id}
+        };
 
-      annotation = {
-        note : annotation.note,
-        activity : { id : vm.activityId},
-        createdBy : {id : vm.userLogged.id}
-      };
+        $http.post($rootScope.server + "/insertAnnotation", annotation)
+          .success(function (data) {
+            vm.showInfo( vm.activityId );
+          })
+          .error(function (data) {
+            console.log("deu pau")
+          });
+      } else {
+      //  MOSTRAR TOAST
+      }
 
-      $http.post($rootScope.server + "/insertAnnotation", annotation)
-        .success(function (data) {
-          vm.showInfo( vm.activityId );
-        })
-        .error(function (data) {
-          console.log("deu pau")
-        });
+
 
     };
 
 
     vm.showInfo = function (activityId) {
 
-
+      vm.newAnnotation.note = "";
 
       $http.get($rootScope.server + "/listAnnotationByActivityId", {params: {'id': activityId}})
         .success(function (data) {
@@ -133,6 +144,11 @@
         })
 
 
+    };
+
+    vm.closeInfo = function () {
+      vm.info = false;
+      vm.activityId = null;
     };
 
     $log.debug(vm.project);
