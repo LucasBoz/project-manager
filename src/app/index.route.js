@@ -18,7 +18,7 @@
       //  controllerAs: 'projectController'
       //})
       .when('/project/:id', {
-        templateUrl: 'app/project/project.html',
+        templateUrl: 'app/project/project-index.html',
         controller: 'ProjectController',
         controllerAs: 'project'
       })
