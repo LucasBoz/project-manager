@@ -17,7 +17,7 @@
       {
         name: 'ABERTO',
         color: 'green',
-        label: "Aberto",
+        label: "Aberto"
       },
       {
         name: 'EM_EXECUCAO',
@@ -42,6 +42,10 @@
     ];
 
     vm.milestones = [];
+
+    vm.userLogged = {
+      id : 1
+    };
 
     vm.project = {activities: []};
 
@@ -90,28 +94,34 @@
     };
 
 
-    vm.insertAnnotation = function (newAnnotation) {
+    vm.insertAnnotation = function (annotation) {
 
-      $http.get($rootScope.server + "/insertAnnotation", {params: {'annotation': newAnnotation}})
+
+      annotation = {
+        note : annotation.note,
+        activity : { id : vm.activityId},
+        createdBy : {id : vm.userLogged.id}
+      };
+
+      $http.post($rootScope.server + "/insertAnnotation", annotation)
         .success(function (data) {
-
-          vm.annotations.push(data);
-
+          vm.showInfo( vm.activityId );
         })
         .error(function (data) {
-          $log.debug(data.message);
-        })
-
+          console.log("deu pau")
+        });
 
     };
 
 
     vm.showInfo = function (activityId) {
 
-       activityId = 1;
+
 
       $http.get($rootScope.server + "/listAnnotationByActivityId", {params: {'id': activityId}})
         .success(function (data) {
+
+          vm.activityId = activityId;
 
           vm.annotations = data;
 
