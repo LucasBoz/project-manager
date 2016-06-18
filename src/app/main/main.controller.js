@@ -9,9 +9,25 @@
 
 
 
-  function MainController($location, $mdDialog, $rootScope, $log, dataService, $mdSidenav, $http, $httpParamSerializer) {
+  function MainController($location, $mdDialog, $rootScope, $log, dataService, $mdSidenav, $http, $mdToast, $httpParamSerializer) {
 
     var vm = this;
+
+    if(localStorage.userLogged){
+      vm.isUserLogged = true;
+      vm.userLogged = {
+        id : localStorage.userLogged,
+        email : "eeee",
+        password : "123"
+      };
+
+    } else {
+      vm.isUserLogged = false;
+      vm.userLogged = {
+        email : "",
+        password : ""
+      };
+    }
 
     $rootScope.server = "http://localhost:8080";
 
@@ -88,7 +104,48 @@
         .error(function (data) {
           console.log("deu pau")
         })
-    }
+    };
+
+    vm.position = {
+      bottom: false,
+        top: true,
+        left: false,
+        right: true
+    };
+    vm.toastPosition = angular.extend({},vm.position);
+    vm.getToastPosition = function() {
+      return Object.keys(vm.toastPosition)
+        .filter(function(pos) { return vm.toastPosition[pos]; })
+        .join(' ');
+    };
+    vm.showSimpleToast = function( text ) {
+      var pinTo = vm.getToastPosition();
+      $mdToast.show(
+        $mdToast.simple()
+          .textContent(text)
+          .position( pinTo )
+          .hideDelay(3000)
+      );
+    };
+
+    vm.signinHandler = function () {
+      if (vm.userLogged.email && vm.userLogged.password ){
+        localStorage.setItem("userLogged", vm.userLogged.id);
+        vm.isUserLogged = true;
+      } else {
+        vm.showSimpleToast("Digite o Email e senha");
+      }
+
+    };
+
+    vm.logout = function () {
+
+      vm.isUserLogged = false;
+      localStorage.removeItem("userLogged");
+
+    };
+
+
 
     vm.newProjectModal = function (ev, projects) {
 
@@ -161,7 +218,10 @@
             $log.debug(data.message);
           })
       }
+
     }
+
+
 
   }
 

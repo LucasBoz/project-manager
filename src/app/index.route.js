@@ -12,11 +12,6 @@
         controller: 'MainController',
         controllerAs: 'main'
       })
-      //.when('/project', {
-      //  templateUrl: 'app/project/project.html',
-      //  controller: 'ProjectController',
-      //  controllerAs: 'projectController'
-      //})
       .when('/project/:id', {
         templateUrl: 'app/project/project-index.html',
         controller: 'ProjectController',
