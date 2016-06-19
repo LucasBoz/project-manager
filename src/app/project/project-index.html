@@ -5,6 +5,7 @@
     <h2> {{project.project.name}} </h2>
 
     <md-select aria-label="status"
+               ng-disabled="project.project.projectManager.id != project.userLogged.id"
                ng-model="project.project.status"
                ng-change="project.updateProjectStatus( project.project )" style="margin: 0 20px 0 30px">
       <md-option ng-value="status.name" ng-repeat="status in project.status track by $index">
@@ -24,7 +25,8 @@
       <md-input-container>
         <md-select  aria-label="Gerente de projeto"
                     ng-model="project.project.projectManager"
-                   ng-change="project.updateProjectStatus( project.project )">
+                    ng-disabled="project.project.projectManager.id != project.userLogged.id"
+                    ng-change="project.updateProjectStatus( project.project )">
           <md-option ng-value="user"
                      ng-selected="project.project.projectManager ? user.id == project.project.projectManager.id : null"
                      ng-repeat="user in project.project.members">
@@ -67,7 +69,7 @@
     <div flex>
 
       <div ng-repeat="activity in project.project.activities" ng-if="project.project.activities.length" layout="row">
-        <md-checkbox ng-model="activity.status" aria-label="done" ng-change="project.updateActivity( activity )"></md-checkbox>
+        <md-checkbox ng-model="activity.status" ng-disabled="!activity.owner" aria-label="done" ng-change="project.updateActivity( activity )"></md-checkbox>
         <div layout="row">
           <p>{{activity.name }}</p>
 
@@ -151,7 +153,7 @@
         <div ng-repeat="activity in milestone.activities | orderBy: 'name'" ng-if="milestone.activities.length"
              layout="row">
 
-          <md-checkbox ng-model="activity.status" aria-label="done" ng-change="project.updateActivity( activity )"></md-checkbox>
+          <md-checkbox ng-model="activity.status" ng-disabled="!activity.owner" aria-label="done" ng-change="project.updateActivity( activity )"></md-checkbox>
 
           <div layout="row">
             <p>{{activity.name }}</p>
