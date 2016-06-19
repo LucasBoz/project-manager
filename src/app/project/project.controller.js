@@ -497,9 +497,13 @@
 
       vm.project = project;
 
+      vm.project.initialDate = new Date( vm.project.initialDate );
+      vm.project.finalDate = new Date( vm.project.finalDate );
+
       vm.milestone = milestone;
 
       if (milestone && milestone.id) {
+
         milestone.initialDate = new Date(milestone.initialDate);
         milestone.finalDate = new Date(milestone.finalDate);
 

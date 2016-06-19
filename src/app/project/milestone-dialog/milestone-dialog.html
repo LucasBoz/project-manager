@@ -25,16 +25,18 @@
           </md-input-container>
 
           <div layout="row">
-            <!--//TODO MAX DATE MIN DATE-->
-            <!--//MAX - milestoneController.milestone.finalDate-->
-            <!--//MIN - milestoneController.project.initialDate-->
-            <md-datepicker max-date="milestoneController.milestone.finalDate"
+            <!--md-min-date="milestoneController.project.initialDate"-->
+            <!--md-max-date="milestoneController.milestone.finalDate"-->
+
+            <md-datepicker md-min-date="milestoneController.project.initialDate"
+                           md-max-date="milestoneController.milestone.finalDate"
                            ng-model="milestoneController.milestone.initialDate"
                            md-placeholder="Início">
             </md-datepicker>
-            <!--// MAX - milestoneController.project.finalDate-->
-            <!--// MIN - milestoneController.project.initialDate-->
-            <md-datepicker ng-model="milestoneController.milestone.finalDate"
+
+            <md-datepicker md-min-date="milestoneController.milestone.initialDate"
+                           md-max-date="milestoneController.project.finalDate"
+                           ng-model="milestoneController.milestone.finalDate"
                            md-placeholder="Término">
             </md-datepicker>
           </div>
