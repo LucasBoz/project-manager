@@ -25,8 +25,18 @@
           </md-input-container>
 
           <div layout="row">
-            <md-datepicker ng-model="milestoneController.milestone.initialDate" md-placeholder="Início"></md-datepicker>
-            <md-datepicker ng-model="milestoneController.milestone.finalDate" md-placeholder="Término"></md-datepicker>
+            <!--//TODO MAX DATE MIN DATE-->
+            <!--//MAX - milestoneController.milestone.finalDate-->
+            <!--//MIN - milestoneController.project.initialDate-->
+            <md-datepicker max-date="milestoneController.milestone.finalDate"
+                           ng-model="milestoneController.milestone.initialDate"
+                           md-placeholder="Início">
+            </md-datepicker>
+            <!--// MAX - milestoneController.project.finalDate-->
+            <!--// MIN - milestoneController.project.initialDate-->
+            <md-datepicker ng-model="milestoneController.milestone.finalDate"
+                           md-placeholder="Término">
+            </md-datepicker>
           </div>
 
         </div>
@@ -60,7 +70,7 @@
         Cancelar
       </md-button>
       <md-button ng-click="milestoneController.closeOk(milestoneController.milestone)" style="margin-right:20px;" >
-        OK {{milestoneController.milestone}} 123
+        OK
       </md-button>
     </md-dialog-actions>
   </form>

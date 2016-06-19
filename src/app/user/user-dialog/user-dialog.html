@@ -1,0 +1,43 @@
+<md-dialog style="min-width : 400px">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Usuário</h2>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px; padding: 20px">
+      <form name="invitationForm">
+
+        <div class="form-group" layout="column">
+          <md-input-container>
+            <label>Nome</label>
+            <input class="form-control" placeholder="Nome" ng-model="insertUserController.user.name" required="true"/>
+          </md-input-container>
+          <md-input-container>
+            <label>Email</label>
+            <input class="form-control" placeholder="Email" ng-model="insertUserController.user.email" required="true"/>
+          </md-input-container>
+          <md-input-container>
+            <label>Senha</label>
+            <input class="form-control" placeholder="Senha" ng-model="insertUserController.user.password" required="true"/>
+          </md-input-container>
+
+        </div>
+
+      </form>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+
+      <span flex></span>
+      <md-button ng-click="insertUserController.cancel()" >
+        Cancelar
+      </md-button>
+      <md-button ng-click="insertUserController.closeOk( insertUserController.user )" style="margin-right:20px;" >
+        Salvar
+      </md-button>
+    </md-dialog-actions>
+
+  </form>
+</md-dialog>

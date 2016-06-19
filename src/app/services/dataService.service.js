@@ -37,10 +37,7 @@
             //     console.log("deu pau")
             //   })
 
-          } else {
-
-
-          }
+          } 
         },
 
 

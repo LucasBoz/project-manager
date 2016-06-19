@@ -9,13 +9,13 @@
 
 
 
-  function MainController($location, $mdDialog, $rootScope, $log, dataService, $mdSidenav, $http, $mdToast, $httpParamSerializer) {
+  function MainController($location, $mdDialog, $rootScope, $log, dataService, $mdSidenav, $http, $mdToast) {
 
     var vm = this;
 
     if(localStorage.userLogged){
       vm.isUserLogged = true;
-      vm.userLogged = {
+      $rootScope.userLogged = {
         id : localStorage.userLogged,
         email : "eeee",
         password : "123"
@@ -23,13 +23,37 @@
 
     } else {
       vm.isUserLogged = false;
-      vm.userLogged = {
+      $rootScope.userLogged = {
         email : "",
         password : ""
       };
     }
 
     $rootScope.server = "http://localhost:8080";
+
+    $rootScope.showSimpleToast = function (text) {
+      var position = {
+        bottom: false,
+        top: true,
+        left: false,
+        right: true
+      };
+      var toastPosition = angular.extend({},position);
+      var getToastPosition = function() {
+        return Object.keys(toastPosition)
+          .filter(function(pos) { return toastPosition[pos]; })
+          .join(' ');
+      };
+
+      var pinTo = getToastPosition();
+      $mdToast.show(
+        $mdToast.simple()
+          .textContent(text)
+          .position( pinTo )
+          .hideDelay(3000)
+      );
+    };
+
 
     vm.status = [
       {
@@ -96,44 +120,36 @@
 
 
     vm.updateProjectStatus = function (project) {
-      console.log("maoe");
+      $log.debug("maoe");
       $http.post($rootScope.server + "/updateProject", project)
         .success(function (data) {
-          console.log("salvou")
+          $log.debug(data);
+          $log.debug("salvou")
         })
         .error(function (data) {
-          console.log("deu pau")
+          $log.debug(data)
         })
     };
 
-    vm.position = {
-      bottom: false,
-        top: true,
-        left: false,
-        right: true
-    };
-    vm.toastPosition = angular.extend({},vm.position);
-    vm.getToastPosition = function() {
-      return Object.keys(vm.toastPosition)
-        .filter(function(pos) { return vm.toastPosition[pos]; })
-        .join(' ');
-    };
-    vm.showSimpleToast = function( text ) {
-      var pinTo = vm.getToastPosition();
-      $mdToast.show(
-        $mdToast.simple()
-          .textContent(text)
-          .position( pinTo )
-          .hideDelay(3000)
-      );
-    };
+
 
     vm.signinHandler = function () {
       if (vm.userLogged.email && vm.userLogged.password ){
-        localStorage.setItem("userLogged", vm.userLogged.id);
-        vm.isUserLogged = true;
+
+        $http.post($rootScope.server + "/userLogged", vm.userLogged)
+          .success(function (data) {
+            vm.userLogged = data;
+            localStorage.setItem("userLogged", vm.userLogged.id);
+            vm.isUserLogged = true;
+            $location.path('/');
+
+          })
+          .error(function (data) {
+           $rootScope.showSimpleToast(data.message);
+          })
+
       } else {
-        vm.showSimpleToast("Digite o Email e senha");
+        $rootScope.showSimpleToast("Email ou senha inválidos");
       }
 
     };
@@ -141,6 +157,7 @@
     vm.logout = function () {
 
       vm.isUserLogged = false;
+      vm.userLogged = null;
       localStorage.removeItem("userLogged");
 
     };
@@ -159,7 +176,7 @@
           locals: {projects: projects}
         })
         .then(function (project) {
-          console.log("hur dur")
+          $log.debug("hur dur")
           vm.projects.push(project);
 
         }, function () {
@@ -193,20 +210,26 @@
       };
 
       function insertProject(project) {
-        $http.post($rootScope.server + '/insertProject', project)
-          .success(function (data) {
+        if(project.projectManager){
+          $http.post($rootScope.server + '/insertProject', project)
+            .success(function (data) {
 
-            $mdDialog.hide(data);
-          }).error(function (data) {
-          //TODO toast. :)
-          if (data.message && data.message.indexOf("org.hibernate.exception.ConstraintViolationException" > -1)) {
-            $log.debug("TOAST COM A MENSAGEM DE NOME INVALIDO QUE NAO E UNICO TODODODODODODODODODODODODODOD");
-          } else {
-            $log.debug(data.message);
-          }
+              $mdDialog.hide(data);
+            }).error(function (data) {
+              $rootScope.showSimpleToast(data.message);
+              $log.debug(data.message);
 
+            // if (data.message && data.message.indexOf("org.hibernate.exception.ConstraintViolationException" > -1)) {
+            //   $log.debug("TOAST COM A MENSAGEM DE NOME INVALIDO QUE NAO E UNICO TODODODODODODODODODODODODODOD");
+            //   $rootScope.showSimpleToast("Já existe um projeto com esse nome");
+            // } else {
+            //   $log.debug(data.message);
+            // }
+          });
+        } else {
+          $rootScope.showSimpleToast("O projeto precisa de um gerente");
+        }
 
-        });
       }
 
       function loadProjectManagers() {

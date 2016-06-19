@@ -6,12 +6,12 @@
     .controller('UserController', UserController);
 
   /** @ngInject */
-  function UserController($routeParams, $mdDialog, $log, $rootScope, $http, dataService) {
+  function UserController($routeParams, $mdDialog, $log, $rootScope, $http) {
 
     var vm = this;
-    listAllUsers();
-    bundles();
-    function listAllUsers() {
+
+
+    vm.listAllUsers = function () {
       $http.get($rootScope.server + "/listAllUsers")
         .success(function (data) {
           vm.users = data;
@@ -21,45 +21,19 @@
         })
     }
 
-
-    function bundles() {
-      $http.get($rootScope.server + "/bundles")
-        .success(function (data) {
-          vm.users = data;
-        })
-        .error(function (data) {
-          $log.debug(data.message);
-        })
-    }
+    vm.listAllUsers();
 
 
 
-    vm.insertUser = function (newUser) {
-
-      $log.debug(angular.toJson(newUser));
-
-      $http.post($rootScope.server + '/insertUser', newUser)
-        .success(function (data) {
-
-          vm.users.push(data);
-
-          vm.newUser = {};
-
-        })
-        .error(function (data) {
-          //TODO toast. :)
-
-          $log.debug(data.message);
-
-        });
-    }
 
     vm.removeUser = function ( user ) {
 
-      $http.post($rootScope.server + '/removeUser', user)
+      $http.post($rootScope.server + '/removeUser', user.id)
         .success(function (data) {
 
-          listAllUsers();
+          $log.debug(data);
+
+          vm.listAllUsers();
 
         })
         .error(function (data) {
@@ -69,6 +43,92 @@
         });
     }
 
+    vm.manageUser = function (ev, user) {
+
+      $mdDialog.show({
+          controller: InsertUserController,
+          controllerAs: 'insertUserController',
+          templateUrl: 'app/user/user-dialog/user-dialog.html',
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          locals: {user: user}
+        })
+        .then(function (answer) {
+          $log.debug(answer);
+        });
+    };
+
+    function InsertUserController(user) {
+
+      var vm = this;
+
+      vm.user = user;
+
+      vm.hide = function () {
+        $mdDialog.hide();
+      };
+      vm.cancel = function () {
+        $mdDialog.cancel();
+      };
+
+      vm.closeOk = function (user) {
+        $mdDialog.hide();
+        vm.saveUser(user);
+
+      };
+
+      vm.saveUser = function (user) {
+        if(user.id){
+          vm.updateUser(user)
+        }else{
+          vm.insertUser(user);
+        }
+      };
+
+      vm.updateUser = function (user) {
+        $http.post($rootScope.server + '/updateUser', user)
+          .success(function (data) {
+
+            $log.debug(data);
+            vm.user = {};
+            vm.listAllUsers();
+
+          })
+          .error(function (data) {
+
+            $log.debug(data.message);
+
+          });
+      };
+
+      vm.listAllUsers = function () {
+        $http.get($rootScope.server + "/listAllUsers")
+          .success(function (data) {
+            vm.users = data;
+          })
+          .error(function (data) {
+            $log.debug(data.message);
+          })
+      }
+
+      vm.insertUser = function (newUser) {
+
+        $http.post($rootScope.server + '/insertUser', newUser)
+          .success(function (data) {
+            $log.debug(data);
+            vm.listAllUsers();
+            vm.newUser = {};
+
+          })
+          .error(function (data) {
+            //TODO toast. :)
+
+            $log.debug(data.message);
+
+          });
+      }
+
+    }
 
   }
 

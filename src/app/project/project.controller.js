@@ -6,7 +6,7 @@
     .controller('ProjectController', ProjectController);
 
   /** @ngInject */
-  function ProjectController($routeParams, $mdDialog, $log, $filter, $rootScope, $http, $httpParamSerializer, dataService) {
+  function ProjectController($routeParams, $mdDialog, $log, $filter, $rootScope, $http) {
 
     var vm = this;
 
@@ -92,32 +92,67 @@
 
       $http.post($rootScope.server + "/updateProject", project)
         .success(function (data) {
-          console.log("salvou")
+         $log.debug(data);
+         $log.debug("salvou")
         })
         .error(function (data) {
-          console.log("deu pau")
+         $log.debug(data);
+         $log.debug("deu pau")
         })
     };
 
 
-    vm.insertAnnotation = function (annotation) {
+    vm.removeAnnotation = function (annotation) {
+      annotation.edit = false;
+      $http.post($rootScope.server + "/removeAnnotation", annotation.id)
+        .success(function (data) {
+          $log.debug(data);
+          vm.showInfo( vm.activityId );
+        })
+        .error(function (data) {
+          $log.debug(data);
+          $log.debug("deu pau")
+        });
+
+    };
+
+    vm.saveAnnotation = function (annotation) {
 
       if(annotation.note){
         annotation = {
+          id: annotation.id,
           note : annotation.note,
           activity : { id : vm.activityId},
           createdBy : {id : vm.userLogged.id}
         };
 
-        $http.post($rootScope.server + "/insertAnnotation", annotation)
-          .success(function (data) {
-            vm.showInfo( vm.activityId );
-          })
-          .error(function (data) {
-            console.log("deu pau")
-          });
+        if( !annotation.id){
+          $http.post($rootScope.server + "/insertAnnotation", annotation)
+            .success(function (data) {
+              $log.debug(data);
+              vm.showInfo( vm.activityId );
+            })
+            .error(function (data) {
+              $log.debug(data);
+              $log.debug("deu pau")
+            });
+
+        } else {
+          $http.post($rootScope.server + "/updateAnnotation", annotation)
+            .success(function (data) {
+              $log.debug(data);
+              vm.showInfo( vm.activityId );
+            })
+            .error(function (data) {
+              $log.debug(data);
+              $log.debug("deu pau")
+            });
+          annotation.edit = false;
+        }
+
+
       } else {
-      //  MOSTRAR TOAST
+        $rootScope.showSimpleToast("Digite uma mensagem");
       }
 
 
@@ -167,7 +202,7 @@
     // Functions
     //------------------
 
-    vm.removeActivity = function (ev, project, activity, milestone) {
+    vm.removeActivity = function (ev, project, activity) {
       var confirm = $mdDialog.confirm()
         .title('Excluir Atividade')
         .content("Você realmente deseja excluir a atividade " + activity.name + "?")
@@ -177,6 +212,7 @@
       $mdDialog.show(confirm).then(function () {
         $http.post($rootScope.server + "/removeActivity", activity.id)
           .success(function (data) {
+           $log.debug(data);
             findProjectById(vm.project.id);
 
           })
@@ -198,6 +234,7 @@
       $mdDialog.show(confirm).then(function () {
         $http.post($rootScope.server + "/removeMilestone", milestone.id)
           .success(function (data) {
+           $log.debug(data);
             findProjectById(project.id);
           })
           .error(function (data) {
@@ -220,7 +257,7 @@
         })
         .then(function (activity) {
           findProjectById(vm.project.id);
-          console.log(activity);
+         $log.debug(activity);
         });
     };
 
@@ -232,16 +269,17 @@
       }
 
 
-      console.log(activity);
+     $log.debug(activity);
       $http.post($rootScope.server + "/updateActivity", activity)
         .success(function (data) {
+         $log.debug(data);
           // findProjectById( vm.project.id );
-          console.log("Update")
+         $log.debug("Update")
         })
         .error(function (data) {
           $log.debug(data.message);
         })
-    }
+    };
 
     vm.manageMembers = function (ev, project) {
       //var project = angular.copy(vm.project);
@@ -257,6 +295,7 @@
           locals: {project: project}
         })
         .then(function (answer) {
+         $log.debug(answer);
 
         });
     };
@@ -274,6 +313,7 @@
           locals: {project: project, milestone: milestone}
         })
         .then(function (answer) {
+         $log.debug(answer);
           // findProjectById( vm.project.id );
         });
     };
@@ -327,14 +367,15 @@
           $http.post($rootScope.server + "/updateProject", project)
             .success(function (data) {
               vm.project = data;
-              console.log("salvou")
+             $log.debug("salvou")
             })
             .error(function (data) {
-              console.log("deu pau");
-              console.log(data);
+             $log.debug("deu pau");
+             $log.debug(data);
             });
         } else {
-          console.log("O USUÀRIO È ADM DO SISTEMA");
+          $rootScope.showSimpleToast("O USUÁRIO É ADMINISTRADOR DO SISTEMA");
+          $log.debug("O USUÀRIO È ADM DO SISTEMA");
         }
       };
 
@@ -363,10 +404,11 @@
         $http.post($rootScope.server + "/updateProject", project)
           .success(function (data) {
             vm.project = data;
-            console.log("salvou")
+           $log.debug("salvou")
           })
           .error(function (data) {
-            console.log("deu pau")
+           $log.debug(data);
+           $log.debug("deu pau")
           })
       };
     }
@@ -400,11 +442,11 @@
           }
 
           if (activity.id) {
-            console.log(activity);
+           $log.debug(activity);
             updateActivity(activity);
 
           } else {
-            console.log(activity);
+           $log.debug(activity);
             insertActivity(activity);
           }
 
@@ -477,7 +519,7 @@
 
           milestone.project = {id: project.id, name: project.name};
 
-          console.log(milestone.activities);
+         $log.debug(milestone.activities);
 
           milestone.activities = null;
 
@@ -506,7 +548,7 @@
           }
 
         } else {
-          console.log("Milestone null");
+         $log.debug("Milestone null");
         }
 
 
@@ -524,6 +566,7 @@
 
             $http.post($rootScope.server + "/updateActivity", activity)
               .success(function (data) {
+               $log.debug(data);
 
                 findProjectById(vm.project.id);
 
@@ -543,6 +586,7 @@
 
               $http.post($rootScope.server + "/updateActivity", activity)
                 .success(function (data) {
+                 $log.debug(data);
 
                   findProjectById(milestone.project.id);
 

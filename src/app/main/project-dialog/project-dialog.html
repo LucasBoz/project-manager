@@ -14,20 +14,19 @@
           <md-input-container>
             <label>Nome do projeto</label>
              <input class="form-control" autocomplete="off" placeholder="Novo projeto" name="email" ng-model="project.newProject.name" required="true"/>
-            <div ng-messages="main.newProject.$error">
-              <div ng-message="required">This is required.</div>
-            </div>
           </md-input-container>
-          
+
           <div layout="row">
             <md-datepicker ng-model="project.newProject.initialDate" md-placeholder="Início"></md-datepicker>
             <md-datepicker ng-model="project.newProject.finalDate" md-placeholder="Término"></md-datepicker>
           </div>
-          
+
           <md-input-container>
             <label>Gerente de projeto</label>
+
             <md-select ng-model="project.newProject.projectManager">
-              <md-option ng-repeat="projectManager in project.projectManagers" ng-value="projectManager">
+              <md-option ng-repeat="projectManager in project.projectManagers"
+                         ng-value="projectManager">
                 {{projectManager.name}}
               </md-option>
             </md-select>

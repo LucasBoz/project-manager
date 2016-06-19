@@ -30,8 +30,8 @@
 
                 <h2 title="{{project.name}}" style="white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis;">{{project.name}}</h2>
 
-                <md-select ng-model="project.status" ng-change="main.updateProjectStatus( project )" style="margin: 0, width: 20px" ng-click="$event.stopPropagation();">
-                  <md-option ng-value="status.name"  ng-repeat="status in main.status">
+                <md-select aria-label="status" ng-model="project.status" ng-change="main.updateProjectStatus( project )" style="margin: 0, width: 20px" ng-click="$event.stopPropagation();">
+                  <md-option ng-value="status.name"  ng-repeat="status in main.status track by status.name">
                     <div layout="row">
                       <div ng-style="{'background-color': status.color}"
                            style="border-radius: 50%; height: 17px; width: 17px; max-width: 17px;"></div>

@@ -10,12 +10,9 @@
   </div>
 
   <div>
-    <md-input-container>
-      <label>Novo usuário</label>
-      <input class="form-control" placeholder="Novo usuário" ng-model="userController.newUser.name" required="true"/>
-    </md-input-container>
-    <md-button class="md-raised md-primary" ng-click="userController.insertUser( userController.newUser )">
-      Salvar
+
+    <md-button class="md-raised md-primary" ng-click="userController.manageUser($event)">
+      Novo usuário
     </md-button>
 
   </div>
@@ -31,7 +28,7 @@
 
         <p>{{user.name}}</p>
 
-        <md-button class="md-primary" ng-click="">Editar</md-button>
+        <md-button class="md-primary" ng-click="userController.manageUser($event, user)">Editar</md-button>
         <md-button class="md-primary" ng-click="userController.removeUser(user)">Remover</md-button>
 
       </md-list-item>
