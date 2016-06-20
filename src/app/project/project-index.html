@@ -46,14 +46,19 @@
     <p style="font-weight: bold; margin-left: 15px">{{project.project.finalDate | date:'dd/MM/yyyy'}}</p>
 
     <div flex></div>
-    <md-button class="md-raised md-primary" ng-click="project.manageMembers($event, project.project)">
+    <md-button class="md-raised md-primary"
+               ng-if="project.project.projectManager.id == project.userLogged.id"
+               ng-click="project.manageMembers($event, project.project)">
       Gerenciar usuários
     </md-button>
     <md-button class="md-raised md-primary"
+               ng-if="project.project.projectManager.id == project.userLogged.id"
                ng-click="project.manageActivity($event, project.project, null, project.milestones)">
       Criar atividade
     </md-button>
-    <md-button class="md-raised md-primary" ng-click="project.manageMilestone($event,project.project)">
+    <md-button class="md-raised md-primary"
+               ng-if="project.project.projectManager.id == project.userLogged.id"
+               ng-click="project.manageMilestone($event,project.project)">
       Criar milestone
     </md-button>
 

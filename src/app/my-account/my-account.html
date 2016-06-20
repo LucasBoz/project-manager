@@ -1,0 +1,31 @@
+<md-content style="padding: 60px">
+  <form>
+
+      <form name="invitationForm">
+
+        <div class="form-group" layout="column">
+          <md-input-container>
+            <label>Nome</label>
+            <input class="form-control" placeholder="Nome" ng-model="myAccountController.user.name" required="true"/>
+          </md-input-container>
+          <md-input-container>
+            <label>Email</label>
+            <input class="form-control" placeholder="Email" ng-model="myAccountController.user.email" required="true"/>
+          </md-input-container>
+          <md-input-container>
+            <label>Senha</label>
+            <input class="form-control" placeholder="Senha" ng-model="myAccountController.user.password" required="true"/>
+          </md-input-container>
+
+        </div>
+
+      </form>
+
+      <span flex></span>
+
+      <md-button ng-click="myAccountController.save( myAccountController.user )" style="margin-right:20px;" >
+        Salvar
+      </md-button>
+
+  </form>
+</md-content>
