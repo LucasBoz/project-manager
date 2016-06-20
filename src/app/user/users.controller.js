@@ -31,14 +31,16 @@
       $http.post($rootScope.server + '/removeUser', user.id)
         .success(function (data) {
 
+          $rootScope.toast("Usuário removido com sucesso");
           $log.debug(data);
 
           vm.listAllUsers();
 
+
         })
         .error(function (data) {
 
-          $log.debug(data.message);
+          $rootScope.toast(data.message);
 
         });
     }
@@ -51,10 +53,10 @@
           templateUrl: 'app/user/user-dialog/user-dialog.html',
           targetEvent: ev,
           clickOutsideToClose: true,
-          locals: {user: user}
+          locals: {user: angular.copy(user)}
         })
         .then(function (answer) {
-          $log.debug(answer);
+          vm.listAllUsers();
         });
     };
 
@@ -79,7 +81,7 @@
 
       vm.saveUser = function (user) {
         if(user.id){
-          vm.updateUser(user)
+          vm.updateUser(user);
         }else{
           vm.insertUser(user);
         }
@@ -88,14 +90,14 @@
       vm.updateUser = function (user) {
         $http.post($rootScope.server + '/updateUser', user)
           .success(function (data) {
-
+            $rootScope.toast ("Usuário atualizado com sucesso!")
             $log.debug(data);
             vm.user = {};
             vm.listAllUsers();
 
           })
           .error(function (data) {
-
+            $rootScope.toast(data.message);
             $log.debug(data.message);
 
           });
@@ -107,6 +109,7 @@
             vm.users = data;
           })
           .error(function (data) {
+            $rootScope.toast(data.message);
             $log.debug(data.message);
           })
       }
@@ -115,13 +118,16 @@
 
         $http.post($rootScope.server + '/insertUser', newUser)
           .success(function (data) {
-            $log.debug(data);
             vm.listAllUsers();
+            $rootScope.toast ("Usuário cadastrado com sucesso");
+            $log.debug(data);
+            
             vm.newUser = {};
 
           })
           .error(function (data) {
             //TODO toast. :)
+            $rootScope.toast( data.exception )
 
             $log.debug(data.message);
 

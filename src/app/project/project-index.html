@@ -205,11 +205,11 @@
 
     </div>
 
-    <div ng-if="project.info" flex="40" style="border:solid 2px #25caff; margin-top: -60px;">
+    <div ng-if="project.info" flex="40" style="border:solid 2px #25caff; margin-top: -60px; padding: 20px 20px 20px 20px">
       <md-tabs md-dynamic-height md-border-bottom>
         <md-tab label="Comentários">
 
-          <div>
+          <div style="margin-top : 20px;">
             <md-input-container style="width: 75%">
               <label>Novo comentário</label>
               <input aria-label="Anotação" class="form-control" placeholder="Novo comentário" ng-model="project.newAnnotation.note"/>
@@ -220,49 +220,31 @@
             </md-button>
 
           </div>
-
-          <md-content style="border:solid 2px #4cd8ff;">
-            <!--//TODO order by annotation.created-->
-            <div ng-repeat="annotation in project.annotations " ng-if=project.annotations style="border:solid 2px #4cd8ff;">
-              <div layout="column">
-
-                <div layout="row">
-                  <!--TODO NG DISABLED-->
-                  <md-input-container ng-disabled="!annotation.edit" style="width: 75%">
-                    <input class="form-control" ng-model="annotation.note"/>
+          <md-divider> </md-divider>
+          <md-content >
+            <md-list>
+              <md-subheader> Comentários </md-subheader>
+              <md-list-item ng-if="!project.annotations.length"> 
+                <h3> A Atividade não possui comentários </h3>
+              </md-list-item>
+              <md-list-item class="md-3-line" ng-repeat="annotation in project.annotations | orderBy : 'note' ">
+                <div class="md-list-item-text" layout="column" >
+                  <md-input-container ng-if="annotation.edit"> 
+                    <label> Comentário</label>
+                    <input ng-model="annotation.note"/>
                   </md-input-container>
-                  <div flex></div>
-                  <div ng-if="annotation.createdBy.id == project.userLogged.id">
-                    <md-button class="md-raised md-primary" ng-if="!annotation.edit" ng-click="annotation.edit = true">
-                      Editar
-                    </md-button>
-                    <div ng-if="annotation.edit" layout="column">
-                      <md-button class="md-raised md-primary" ng-click="project.saveAnnotation( annotation )">
-                        Salvar
-                      </md-button>
-                      <md-button class="md-raised md-primary" ng-click="project.removeAnnotation( annotation )">
-                        Excluir
-                      </md-button>
-                    </div>
-                  </div>
-
-
+                  <h3 ng-if="!annotation.edit"> {{annotation.note}} </h3>
+                  <h4> Por: {{annotation.createdBy.name}}</h4>
+                  <p> Criado: {{annotation.created | date:"dd-MM-yyyy hh:mm "}}</p>
+                  <p ng-if="annotation.updated"> Ultima edição: {{annotation.updated | date:"dd-MM-yyyy hh:mm "}} </p>
                 </div>
+                <md-button class="md-primary" ng-if="annotation.edit" ng-click="project.saveAnnotation( annotation )"> Salvar </md-button>
+                <md-button class="md-primary" ng-if="annotation.edit" ng-click="annotation.edit = !annotation.edit"> Cancelar </md-button>
+                <md-button class="md-primary" ng-click="annotation.edit = !annotation.edit" ng-if="!annotation.edit"> Editar </md-button>
+                <md-button class="md-primary" ng-if="!annotation.edit" ng-click="project.removeAnnotation( annotation )"> Excluir </md-button>
+              </md-list-item>
+            </md-list>
 
-
-                <div layout="row">
-                  <span> {{annotation.created | date:"dd-MM-yyyy hh:mm "}} </span>
-                  <span> por {{annotation.createdBy.name}}</span>
-                </div>
-
-                <md-divider></md-divider>
-              </div>
-
-
-            </div>
-            <div ng-if=!project.annotations>
-              <p>Nenhuma anotação encontrada</p>
-            </div>
           </md-content>
         </md-tab>
       </md-tabs>

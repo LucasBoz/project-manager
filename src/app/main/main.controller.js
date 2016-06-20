@@ -54,6 +54,29 @@
       );
     };
 
+    $rootScope.toast = function (text) {
+      var position = {
+        bottom: false,
+        top: true,
+        left: false,
+        right: true
+      };
+      var toastPosition = angular.extend({},position);
+      var getToastPosition = function() {
+        return Object.keys(toastPosition)
+          .filter(function(pos) { return toastPosition[pos]; })
+          .join(' ');
+      };
+
+      var pinTo = getToastPosition();
+      $mdToast.show(
+        $mdToast.simple()
+          .textContent(text)
+          .position( pinTo )
+          .hideDelay(3000)
+      );
+    };
+
 
     vm.status = [
       {
