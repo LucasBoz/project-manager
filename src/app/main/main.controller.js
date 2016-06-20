@@ -15,11 +15,7 @@
 
     if(localStorage.userLogged){
       vm.isUserLogged = true;
-      $rootScope.userLogged = {
-        id : localStorage.userLogged,
-        email : "eeee",
-        password : "123"
-      };
+      $rootScope.userLogged = angular.fromJson(localStorage.userLogged);
 
     } else {
       vm.isUserLogged = false;
@@ -140,6 +136,9 @@
     vm.changeToListUsers = function () {
       $location.path('/users');
     };
+    vm.changeToMyAccount = function () {
+      $location.path('/myAccount');
+    };
 
 
     vm.updateProjectStatus = function (project) {
@@ -162,7 +161,7 @@
         $http.post($rootScope.server + "/userLogged", vm.userLogged)
           .success(function (data) {
             vm.userLogged = data;
-            localStorage.setItem("userLogged", vm.userLogged.id);
+            localStorage.setItem("userLogged", angular.toJson(vm.userLogged));
             vm.isUserLogged = true;
             $location.path('/');
 

@@ -27,6 +27,11 @@
         controller: 'AuthenticationController',
         controllerAs: 'authenticationController'
       })
+      .when('/myAccount', {
+        templateUrl: 'app/my-account/my-account.html',
+        controller: 'MyAccountController',
+        controllerAs: 'myAccountController'
+      })
       .otherwise({
         redirectTo: '/'
       });
