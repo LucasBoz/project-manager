@@ -21,12 +21,13 @@
 
     }
 
-    vm.updateUser = function () {
+    vm.updateUser = function (user) {
       $http.post($rootScope.server + '/updateUser', user)
         .success(function (data) {
 
+          vm.user = user;
           $rootScope.userLogged = data;
-          localStorage.setItem("userLogged", angular.toJson(vm.userLogged ) );
+          localStorage.setItem("userLogged", angular.toJson( vm.user ) );
 
         })
         .error(function (data) {
