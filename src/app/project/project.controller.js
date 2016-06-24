@@ -90,14 +90,19 @@
 
     vm.updateProjectStatus = function (project) {
 
-      $http.post($rootScope.server + "/updateProject", project)
+      var requestParams = {
+        data : project,
+        user : $rootScope.userLogged
+      };
+
+      $http.post($rootScope.server + "/updateProjectStatus", requestParams)
         .success(function (data) {
-         $log.debug(data);
-         $log.debug("salvou")
+          $log.debug(data);
+          $log.debug("salvou")
         })
         .error(function (data) {
-         $log.debug(data);
-         $log.debug("deu pau")
+          $rootScope.toast(data.message);
+          $log.debug(data)
         })
     };
 
@@ -126,8 +131,14 @@
           createdBy : {id : vm.userLogged.id}
         };
 
+        var requestParams = {
+          data : activity,
+          user : $rootScope.userLogged
+        };
+
+
         if( !annotation.id){
-          $http.post($rootScope.server + "/insertAnnotation", annotation)
+          $http.post($rootScope.server + "/insertAnnotation", requestParams)
             .success(function (data) {
               $log.debug(data);
               vm.showInfo( vm.activityId );
@@ -138,7 +149,7 @@
             });
 
         } else {
-          $http.post($rootScope.server + "/updateAnnotation", annotation)
+          $http.post($rootScope.server + "/updateAnnotation", requestParams)
             .success(function (data) {
               $log.debug(data);
               vm.showInfo( vm.activityId );
@@ -152,7 +163,7 @@
 
 
       } else {
-        $rootScope.showSimpleToast("Digite uma mensagem");
+        $rootScope.toast("Digite uma mensagem");
       }
 
 
@@ -232,7 +243,13 @@
         .ok('Remover')
         .cancel('Cancelar');
       $mdDialog.show(confirm).then(function () {
-        $http.post($rootScope.server + "/removeMilestone", milestone.id)
+
+        var requestParams = {
+          data : milestone,
+          user : $rootScope.userLogged
+        };
+
+        $http.post($rootScope.server + "/removeMilestone", requestParams)
           .success(function (data) {
            $log.debug(data);
             findProjectById(project.id);
@@ -268,9 +285,13 @@
         activity.project = {id: vm.project.id, name: vm.project.name};
       }
 
+      var requestParams = {
+        data : activity,
+        user : $rootScope.userLogged
+      };
 
      $log.debug(activity);
-      $http.post($rootScope.server + "/updateActivity", activity)
+      $http.post($rootScope.server + "/updateActivity", requestParams)
         .success(function (data) {
          $log.debug(data);
           // findProjectById( vm.project.id );
@@ -318,6 +339,46 @@
         });
     };
 
+    vm.showProjectLog = function (ev, project) {
+
+      $mdDialog.show({
+          controller: LogController,
+          controllerAs: 'logController',
+          templateUrl: 'app/project/log-dialog/log-dialog.html',
+          //parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          locals: {project: project}
+
+        })
+        .then(function (answer) {
+         $log.debug(answer);
+
+        });
+    };
+
+    function LogController(project) {
+
+      var vm = this;
+
+      vm.project = project;
+
+      $http.get($rootScope.server + "/log", {params: {'id':  vm.project.id}})
+        .success(function (data) {
+          vm.log = data;
+        })
+        .error(function (data) {
+          $log.debug(data.message);
+        });
+
+      vm.close = function () {
+        $mdDialog.hide();
+      };
+
+
+    }
+
+
     //------------
     //  DIALOG CONTROLLER
     //------------
@@ -363,8 +424,11 @@
           vm.users.push(member);
 
           vm.members.splice(vm.members.indexOf(member), 1);
-
-          $http.post($rootScope.server + "/updateProject", project)
+          var requestParams = {
+            data : project,
+            user : $rootScope.userLogged
+          };
+          $http.post($rootScope.server + "/updateProject", requestParams)
             .success(function (data) {
               vm.project = data;
              $log.debug("salvou")
@@ -374,8 +438,8 @@
              $log.debug(data);
             });
         } else {
-          $rootScope.showSimpleToast("O USUÁRIO É ADMINISTRADOR DO SISTEMA");
-          $log.debug("O USUÀRIO È ADM DO SISTEMA");
+          $rootScope.toast("O usuário é o gerente desse projeto");
+          $log.debug("O usuário é o gerente desse projeto");
         }
       };
 
@@ -400,8 +464,11 @@
         //   }).error(function (message) {
         //   $log.debug(message);
         // });
-
-        $http.post($rootScope.server + "/updateProject", project)
+        var requestParams = {
+          data : project,
+          user : $rootScope.userLogged
+        };
+        $http.post($rootScope.server + "/updateProject",requestParams)
           .success(function (data) {
             vm.project = data;
            $log.debug("salvou")
@@ -457,7 +524,13 @@
       };
 
       function insertActivity(activity) {
-        $http.post($rootScope.server + "/insertActivity", activity)
+
+        var requestParams = {
+          data : activity,
+          user : $rootScope.userLogged
+        };
+
+        $http.post($rootScope.server + "/insertActivity", requestParams)
           .success(function (data) {
             $mdDialog.hide(data);
           })
@@ -467,7 +540,13 @@
       }
 
       function updateActivity(activity) {
-        $http.post($rootScope.server + "/updateActivity", activity)
+
+        var requestParams = {
+          data : activity,
+          user : $rootScope.userLogged
+        };
+
+        $http.post($rootScope.server + "/updateActivity", requestParams)
           .success(function (data) {
             $mdDialog.hide(data);
           })
@@ -567,8 +646,11 @@
             activity.selected = false;
             activity.project = null;
             activity.milestone = {id: data.id};
-
-            $http.post($rootScope.server + "/updateActivity", activity)
+            var requestParams = {
+              data : activity,
+              user : $rootScope.userLogged
+            };
+            $http.post($rootScope.server + "/updateActivity", requestParams)
               .success(function (data) {
                $log.debug(data);
 
@@ -588,7 +670,12 @@
               activity.project = null;
               activity.milestone = {id: data.id};
 
-              $http.post($rootScope.server + "/updateActivity", activity)
+              var requestParams = {
+                data : activity,
+                user : $rootScope.userLogged
+              };
+
+              $http.post($rootScope.server + "/updateActivity", requestParams)
                 .success(function (data) {
                  $log.debug(data);
 
@@ -609,7 +696,12 @@
 
         $log.debug(milestone);
 
-        $http.post($rootScope.server + "/insertMilestone", milestone)
+        var requestParams = {
+          data : milestone,
+          user : $rootScope.userLogged
+        };
+
+        $http.post($rootScope.server + "/insertMilestone", requestParams)
           .success(function (data) {
             $mdDialog.hide(data);
 
@@ -624,11 +716,16 @@
 
       function updateMilestone(milestone) {
 
+        var requestParams = {
+          data : milestone,
+          user : $rootScope.userLogged
+        };
+
         $log.debug(milestone);
 
         $log.debug(angular.toJson(milestone));
 
-        $http.post($rootScope.server + "/updateMilestone", milestone)
+        $http.post($rootScope.server + "/updateMilestone", requestParams)
           .success(function (data) {
             $mdDialog.hide(data);
 

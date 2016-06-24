@@ -27,50 +27,31 @@
 
     $rootScope.server = "http://localhost:8080";
 
-    $rootScope.showSimpleToast = function (text) {
-      var position = {
-        bottom: false,
-        top: true,
-        left: false,
-        right: true
-      };
-      var toastPosition = angular.extend({},position);
-      var getToastPosition = function() {
-        return Object.keys(toastPosition)
-          .filter(function(pos) { return toastPosition[pos]; })
-          .join(' ');
-      };
-
-      var pinTo = getToastPosition();
-      $mdToast.show(
-        $mdToast.simple()
-          .textContent(text)
-          .position( pinTo )
-          .hideDelay(3000)
-      );
-    };
-
     $rootScope.toast = function (text) {
-      var position = {
-        bottom: false,
-        top: true,
-        left: false,
-        right: true
-      };
-      var toastPosition = angular.extend({},position);
-      var getToastPosition = function() {
-        return Object.keys(toastPosition)
-          .filter(function(pos) { return toastPosition[pos]; })
-          .join(' ');
-      };
 
-      var pinTo = getToastPosition();
-      $mdToast.show(
-        $mdToast.simple()
-          .textContent(text)
-          .position( pinTo )
-          .hideDelay(3000)
-      );
+      if( text.length > 1){
+        var position = {
+          bottom: false,
+          top: true,
+          left: false,
+          right: true
+        };
+        var toastPosition = angular.extend({},position);
+        var getToastPosition = function() {
+          return Object.keys(toastPosition)
+            .filter(function(pos) { return toastPosition[pos]; })
+            .join(' ');
+        };
+
+        var pinTo = getToastPosition();
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent(text)
+            .position( pinTo )
+            .hideDelay(3000)
+        );
+      }
+
     };
 
 
@@ -142,13 +123,24 @@
 
 
     vm.updateProjectStatus = function (project) {
+
+      var oldStatus = project.status;
+
+      var requestParams = {
+        data : project,
+        user : $rootScope.userLogged
+      };
+
       $log.debug("maoe");
-      $http.post($rootScope.server + "/updateProject", project)
+      console.log(project);
+      $http.post($rootScope.server + "/updateProjectStatus", requestParams)
         .success(function (data) {
           $log.debug(data);
           $log.debug("salvou")
         })
         .error(function (data) {
+          project.status = oldStatus;
+          $rootScope.toast(data.message);
           $log.debug(data)
         })
     };
@@ -167,11 +159,11 @@
 
           })
           .error(function (data) {
-           $rootScope.showSimpleToast(data.message);
+           $rootScope.toast(data.message);
           })
 
       } else {
-        $rootScope.showSimpleToast("Email ou senha inválidos");
+        $rootScope.toast("Email ou senha inválidos");
       }
 
     };
@@ -213,7 +205,7 @@
       var vm = this;
       loadProjectManagers();
 
-      vm.hide = function () {
+      vm.close = function () {
         $mdDialog.hide();
       };
 
@@ -233,24 +225,31 @@
 
       function insertProject(project) {
         if(project.projectManager){
-          $http.post($rootScope.server + '/insertProject', project)
+
+          var asd = {
+            data : project,
+            user : $rootScope.userLogged
+          };
+
+          $http.post($rootScope.server + '/insertProject', asd)
             .success(function (data) {
 
               $mdDialog.hide(data);
             }).error(function (data) {
-              $rootScope.showSimpleToast(data.message);
+            $rootScope.toast(data.message);
               $log.debug(data.message);
 
             // if (data.message && data.message.indexOf("org.hibernate.exception.ConstraintViolationException" > -1)) {
             //   $log.debug("TOAST COM A MENSAGEM DE NOME INVALIDO QUE NAO E UNICO TODODODODODODODODODODODODODOD");
-            //   $rootScope.showSimpleToast("Já existe um projeto com esse nome");
+            //   $rootScope.toast("Já existe um projeto com esse nome");
             // } else {
             //   $log.debug(data.message);
             // }
           });
         } else {
-          $rootScope.showSimpleToast("O projeto precisa de um gerente");
+          $rootScope.toast("O projeto precisa de um gerente");
         }
+
 
       }
 

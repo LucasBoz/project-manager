@@ -62,6 +62,12 @@
       Criar milestone
     </md-button>
 
+    <md-button class="md-raised md-primary"
+               ng-if="project.project.projectManager.id == project.userLogged.id"
+               ng-click="project.showProjectLog($event,project.project)">
+      LOG
+    </md-button>
+
   </div>
 
   <md-divider></md-divider>
@@ -231,12 +237,12 @@
           <md-content >
             <md-list>
               <md-subheader> Comentários </md-subheader>
-              <md-list-item ng-if="!project.annotations.length"> 
+              <md-list-item ng-if="!project.annotations.length">
                 <h3> A Atividade não possui comentários </h3>
               </md-list-item>
               <md-list-item class="md-3-line" ng-repeat="annotation in project.annotations | orderBy : 'note' ">
                 <div class="md-list-item-text" layout="column" >
-                  <md-input-container ng-if="annotation.edit"> 
+                  <md-input-container ng-if="annotation.edit">
                     <label> Comentário</label>
                     <input ng-model="annotation.note"/>
                   </md-input-container>

@@ -20,14 +20,7 @@
 
         saveProject : function (project) {
           if(project.id){
-
-
-            return $http({
-              method: 'POST',
-              url: server + "/updateProject",
-              // headers: { 'Content-Type' : 'application/x-www-form-urlencoded' },
-              data: $httpParamSerializer(project)
-            });
+            
 
             // http.post($rootScope.server + "/updateProject", project)
             //   .success(function (data) {

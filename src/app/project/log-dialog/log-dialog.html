@@ -1,0 +1,37 @@
+<md-dialog style="min-width : 800px">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Log do projeto</h2>
+
+
+        <span flex></span>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px; padding: 20px">
+      <div name="invitationForm">
+
+        <div class="form-group" layout="column">
+          <div ng-repeat="log in logController.log">
+
+            {{log.description}}
+
+          </div>
+
+
+        </div>
+
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+
+      <span flex></span>
+
+      <md-button ng-click="logController.close()" style="margin-right:20px;" >
+        FECHAR
+      </md-button>
+    </md-dialog-actions>
+
+  </form>
+</md-dialog>
