@@ -210,7 +210,7 @@
       };
 
       vm.closeOk = function (project) {
-        if ( !project.members ) {
+        if ( project.projectManager && !project.members || project.members == [] ) {
           project.members = [];
           if(!project.members.length){
             project.members.push(project.projectManager);

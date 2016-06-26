@@ -11,10 +11,15 @@
     <md-dialog-content style="max-width:800px;max-height:810px; padding: 20px">
       <div name="invitationForm">
 
-        <div class="form-group" layout="column">
-          <div ng-repeat="log in logController.log">
+        <md-input-container style="width: 90%">
+          <label>Filtre por Usuário, tipo de ação, nome da atividade, nome do milestone, status do projeto</label>
+          <input class="form-control" placeholder="Log" ng-model="logController.filter"/>
+        </md-input-container>
 
-            {{log.description}}
+        <div class="form-group" layout="column">
+          <div ng-repeat="log in logController.log | filter: logController.filter">
+
+            {{log.description}} em {{log.created | date:"dd/MM:yyyy - hh:mm"}}
 
           </div>
 

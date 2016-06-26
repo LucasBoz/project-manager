@@ -5,7 +5,7 @@
     <h2> {{project.project.name}} </h2>
 
     <md-select aria-label="status"
-               ng-disabled="project.project.projectManager.id != project.userLogged.id"
+               ng-disabled="project.project.projectManager.id != project.userLogged.id "
                ng-model="project.project.status"
                ng-change="project.updateProjectStatus( project.project )" style="margin: 0 20px 0 30px">
       <md-option ng-value="status.name" ng-repeat="status in project.status track by $index">
@@ -16,6 +16,7 @@
         </div>
       </md-option>
     </md-select>
+    {{project.project.status}}
     <div flex></div>
 
     <div layout="row">
@@ -80,7 +81,7 @@
     <div flex>
 
       <div ng-repeat="activity in project.project.activities" ng-if="project.project.activities.length" layout="row">
-        <md-checkbox ng-model="activity.status" ng-disabled="!activity.owner" aria-label="done" ng-change="project.updateActivity( activity )"></md-checkbox>
+        <md-checkbox ng-model="activity.status" ng-disabled="!activity.owner || project.project.status != 'EM_EXECUCAO'" aria-label="done" ng-change="project.updateActivity( activity )"></md-checkbox>
         <div layout="row">
           <p>{{activity.name }}</p>
 

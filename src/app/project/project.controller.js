@@ -82,6 +82,7 @@
       $http.get($rootScope.server + "/findFullProjectById", {params: {'id': id}})
         .success(function (data) {
           vm.project = data;
+          vm.project.oldStatus = vm.project.status;
         })
         .error(function (data) {
           $log.debug(data.message);
@@ -89,6 +90,7 @@
     }
 
     vm.updateProjectStatus = function (project) {
+
 
       var requestParams = {
         data : project,
@@ -98,10 +100,12 @@
       $http.post($rootScope.server + "/updateProjectStatus", requestParams)
         .success(function (data) {
           $log.debug(data);
+          project.oldStatus = project.status;
           $log.debug("salvou")
         })
         .error(function (data) {
           $rootScope.toast(data.message);
+          project.status = project.oldStatus;
           $log.debug(data)
         })
     };
@@ -487,7 +491,13 @@
 
       loadUsers();
       vm.activity = activity;
+      if(!vm.activity){
+        vm.activity = {
+          activityType : 'ACTION'
+        }
+      }
       vm.project = project;
+      vm.project.finalDate = new Date( vm.project.finalDate );
       vm.members = project.members;
       vm.projectMilestones = milestones;
 
@@ -716,6 +726,7 @@
 
       function updateMilestone(milestone) {
 
+
         var requestParams = {
           data : milestone,
           user : $rootScope.userLogged
@@ -735,6 +746,8 @@
 
           })
           .error(function (data) {
+
+            $mdDialog.hide(data);
             $log.debug(data.message);
           })
       }

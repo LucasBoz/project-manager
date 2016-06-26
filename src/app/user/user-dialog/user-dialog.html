@@ -12,7 +12,7 @@
         <div class="form-group" layout="column">
           <md-input-container>
             <label>Nome</label>
-            <input class="form-control" placeholder="Nome" ng-model="insertUserController.user.name" required="true"/>
+            <input class="form-control" ng-disabled="insertUserController.user.id" placeholder="Nome" ng-model="insertUserController.user.name" required="true"/>
           </md-input-container>
           <md-input-container>
             <label>Email</label>
@@ -22,6 +22,14 @@
             <label>Senha</label>
             <input class="form-control" placeholder="Senha" ng-model="insertUserController.user.password" required="true"/>
           </md-input-container>
+
+          <label>Perfil de acesso</label>
+          <md-radio-group ng-model="insertUserController.user.role">
+            <md-radio-button value="ADMINISTRADOR" class="md-primary">Administrador</md-radio-button>
+            <md-radio-button value="USER" class="md-primary"> Usuário </md-radio-button>
+          </md-radio-group>
+
+
 
         </div>
 

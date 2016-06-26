@@ -28,6 +28,8 @@
 
         <p>{{user.name}}</p>
 
+        <p>{{user.created | date:"dd/MM/yyyy"}}</p>
+
         <md-button class="md-primary" ng-click="userController.manageUser($event, user)">Editar</md-button>
         <md-button class="md-primary" ng-click="userController.removeUser(user)">Remover</md-button>
 

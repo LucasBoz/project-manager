@@ -17,8 +17,8 @@
           </md-input-container>
 
           <div layout="row">
-            <md-datepicker ng-model="project.newProject.initialDate" md-placeholder="Início"></md-datepicker>
-            <md-datepicker ng-model="project.newProject.finalDate" md-placeholder="Término"></md-datepicker>
+            <md-datepicker ng-model="project.newProject.initialDate" md-max-date="project.newProject.finalDate" md-placeholder="Início"></md-datepicker>
+            <md-datepicker ng-model="project.newProject.finalDate" md-min-date="project.newProject.initialDate" md-placeholder="Término"></md-datepicker>
           </div>
 
           <md-input-container>

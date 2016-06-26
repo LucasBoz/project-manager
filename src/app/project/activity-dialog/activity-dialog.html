@@ -26,6 +26,20 @@
                 <!--</div>-->
             </md-input-container>
 
+
+            <label>Tipo de atividade</label>
+            <md-radio-group ng-model="activity.activity.activityType">
+              <md-radio-button value="ACTION" class="md-primary">Ação</md-radio-button>
+              <md-radio-button value="EVENT" class="md-primary"> Evento </md-radio-button>
+            </md-radio-group>
+
+
+            <md-datepicker
+                           md-max-date="activity.project.finalDate"
+                           ng-model="activity.activity.finalDate"
+                           md-placeholder="Data limite">
+            </md-datepicker>
+
             <md-input-container>
               <label>Milestone</label>
               <md-select ng-model="activity.activity.milestone">
