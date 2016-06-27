@@ -84,6 +84,7 @@
         .success(function (data) {
           vm.project = data;
           vm.project.oldStatus = vm.project.status;
+          vm.milestones = data.milestones;
         })
         .error(function (data) {
           $log.debug(data.message);
@@ -254,6 +255,11 @@
         $http.post($rootScope.server + "/removeMilestone", requestParams)
           .success(function (data) {
            $log.debug(data);
+            for ( var k = 0; k< $scope.events.length; k++ ) {
+              if ( $scope.events[k].title == milestone.name ) {
+                $scope.events.splice(1, k);
+              }
+            }
             findProjectById(project.id);
           })
           .error(function (data) {
@@ -713,9 +719,11 @@
           .success(function (data) {
             $mdDialog.hide(data);
 
+
             saveActivities(data);
 
             findProjectById(data.project.id);
+
           })
           .error(function (data) {
             $log.debug(data.message);
@@ -763,6 +771,7 @@
     };
 
 $scope.manageMilestones = function () {
+ 
   for( var k=0; k < vm.milestones.length; k++) {
     var event = {
       title : vm.milestones[k].name,
@@ -770,8 +779,19 @@ $scope.manageMilestones = function () {
       end: new Date (vm.milestones[k].finalDate),
       stick: true
     }
-    $scope.events.push ( event );
+    var found = false;
+    for ( var i  = 0; i < $scope.events.length; i++ ) {
+      if ( event.title == $scope.events[i].title ) {
+        found = true;
+        break;
+      }
+    }
+    if ( !found ) {
+      $scope.events.push ( event );
+    }
+    
   }
+  console.log($scope.events);
 }
 
 
