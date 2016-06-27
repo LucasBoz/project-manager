@@ -2,6 +2,6 @@
   'use strict';
 
   angular
-    .module('frontEnd', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource', 'ngRoute', 'ngMaterial', 'toastr']);
+    .module('frontEnd', ['ui.calendar', 'ui.bootstrap','ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource', 'ngRoute', 'ngMaterial', 'toastr']);
 
 })();

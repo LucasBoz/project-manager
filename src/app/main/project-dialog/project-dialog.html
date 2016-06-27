@@ -25,7 +25,7 @@
             <label>Gerente de projeto</label>
 
             <md-select ng-model="project.newProject.projectManager">
-              <md-option ng-repeat="projectManager in project.projectManagers"
+              <md-option ng-repeat="projectManager in project.projectManagers "
                          ng-value="projectManager">
                 {{projectManager.name}}
               </md-option>
@@ -38,7 +38,7 @@
     <md-dialog-actions layout="row">
 
       <span flex></span>
-      <md-button ng-click="project.hide()" >
+      <md-button ng-click="project.close()" >
         Cancelar
       </md-button>
       <md-button ng-click="project.closeOk(project.newProject)" style="margin-right:20px;" >

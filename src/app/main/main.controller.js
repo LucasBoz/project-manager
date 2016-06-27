@@ -191,7 +191,11 @@
         })
         .then(function (project) {
           $log.debug("hur dur")
-          vm.projects.push(project);
+          if ( project != null )
+          {
+            vm.projects.push(project);
+          }
+          
 
         }, function () {
           vm.status = 'You cancelled the dialog.';
@@ -203,6 +207,10 @@
       $log.debug('MembersController');
 
       var vm = this;
+
+      vm.newProject = {
+        projectManager : null
+      }
       loadProjectManagers();
 
       vm.close = function () {
@@ -257,6 +265,13 @@
         $http.get($rootScope.server + "/listAllUsers")
           .success(function (data) {
             vm.projectManagers = data;
+            for ( var k=0; k < data.length; k++ )
+            {
+              if ( data[k].id == $rootScope.userLogged.id ) {
+                vm.newProject.projectManager = data[k];
+              }
+             
+            }
           })
           .error(function (data) {
             $log.debug(data.message);

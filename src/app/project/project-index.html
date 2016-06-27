@@ -1,6 +1,15 @@
 <md-content layout="column" layout-fill flex style="padding: 25px 20px 20px 20px">
+ <md-tabs layout-fill flex>
+   </md-tab>
+  <md-tab>
+  <md-tab-label>
+    Projeto
+  </md-tab-label>
+  <md-tab-body layout-fill flex>
 
-  <div layout="row">
+    
+
+    <div layout="row">
 
     <h2> {{project.project.name}} </h2>
 
@@ -110,10 +119,10 @@
           Remover
         </md-button>
         <md-button class="md-primary md-raised" ng-if="project.activityId != activity.id" ng-click="project.showInfo(activity.id)">
-          Visualizar log
+          Visualizar Comentário
         </md-button>
         <md-button class="md-primary md-raised" ng-if="project.activityId == activity.id" ng-click="project.closeInfo()">
-          Fechar anotações
+          Fechar Comentários
         </md-button>
       </div>
 
@@ -252,10 +261,10 @@
                   <p> Criado: {{annotation.created | date:"dd-MM-yyyy hh:mm "}}</p>
                   <p ng-if="annotation.updated"> Ultima edição: {{annotation.updated | date:"dd-MM-yyyy hh:mm "}} </p>
                 </div>
-                <md-button class="md-primary" ng-if="annotation.edit" ng-click="project.saveAnnotation( annotation )"> Salvar </md-button>
-                <md-button class="md-primary" ng-if="annotation.edit" ng-click="annotation.edit = !annotation.edit"> Cancelar </md-button>
-                <md-button class="md-primary" ng-click="annotation.edit = !annotation.edit" ng-if="!annotation.edit"> Editar </md-button>
-                <md-button class="md-primary" ng-if="!annotation.edit" ng-click="project.removeAnnotation( annotation )"> Excluir </md-button>
+                <md-button class="md-primary" ng-if="annotation.edit" ng-disabled="annotation.createdBy.id != userLogged.id" ng-click="project.saveAnnotation( annotation )"> Salvar </md-button>
+                <md-button class="md-primary" ng-if="annotation.edit" ng-disabled="annotation.createdBy.id != userLogged.id" ng-click="annotation.edit = !annotation.edit"> Cancelar </md-button>
+                <md-button class="md-primary" ng-click="annotation.edit = !annotation.edit" ng-disabled="annotation.createdBy.id != userLogged.id" ng-if="!annotation.edit"> Editar </md-button>
+                <md-button class="md-primary" ng-disabled="annotation.createdBy.id != userLogged.id" ng-if="!annotation.edit" ng-click="project.removeAnnotation( annotation )"> Excluir </md-button>
               </md-list-item>
             </md-list>
 
@@ -267,5 +276,25 @@
 
   </div>
 
+    </md-tab-body>
+  </md-tab>
+  <md-tab ng-click="manageMilestones()">
+  <md-tab-label>
+    Calendario
+  </md-tab-label>
+  <md-tab-body>
+
+    <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div> 
+  </md-tab-body>
+  </md-tab>
+
+
+
+
+     
+
+
+ </md-tabs>
+  
 
 </md-content>

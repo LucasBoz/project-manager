@@ -5,6 +5,20 @@
     <title>Project manager</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+
+    <link rel="icon" href="favicon.ico" />
+    <link rel="stylesheet" href="/../bower_components/bootstrap-css/css/bootstrap.css" />
+    <link rel="stylesheet" href="/../bower_components/fullcalendar/dist/fullcalendar.css">
+    <link rel="stylesheet" href="calendarDemo.css" />
+
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script>
+    <script src="../bower_components/moment/moment.js"></script>
+    <script src="../bower_components/fullcalendar/dist/fullcalendar.js"></script>
+    <script src="../bower_components/fullcalendar/dist/gcal.js"></script>
+    <script src="calendar.js"></script>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
     <!-- build:css({.tmp/serve,src}) styles/vendor.css -->
@@ -75,7 +89,7 @@
     </header>
 
 
-    <div ng-view></div>
+    <div ng-view style="width:100%; height: 1000px"></div>
 
     <!-- build:js(src) scripts/vendor.js -->
     <!-- bower:js -->
